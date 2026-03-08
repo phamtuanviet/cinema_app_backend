@@ -1,6 +1,7 @@
 package com.example.my_movie_app.entity;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.Lob;
 import jakarta.persistence.Table;
 import lombok.*;
 
@@ -12,11 +13,15 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class Cinema extends BaseEntity {
-
     private String name;
     private String address;
+
+    @Lob
+    private String description;
+
+    private String region;
+    private String cineplex;
     private Double latitude;
     private Double longitude;
-    private String hotline;
     private Boolean isActive = true;
 }
