@@ -36,6 +36,7 @@ public class AuthController {
             @RequestBody LoginRequest request,
             HttpServletRequest httpRequest
     ) {
+
         LoginResponse response = authService.login(
                 request,
                 httpRequest.getHeader("User-Agent"),
