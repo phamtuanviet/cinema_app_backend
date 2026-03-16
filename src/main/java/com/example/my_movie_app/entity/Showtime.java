@@ -19,14 +19,11 @@ public class Showtime extends BaseEntity {
 
     @ManyToOne
     private Movie movie;
-
     @ManyToOne
     private Room room;
-
     private LocalDateTime startTime;
     private LocalDateTime endTime;
-
     private BigDecimal weekendModifier;
-
+    private BigDecimal basePrice;
     private String status;
 }

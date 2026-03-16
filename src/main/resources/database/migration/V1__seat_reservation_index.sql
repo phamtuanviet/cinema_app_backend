@@ -1,0 +1,3 @@
+-- CREATE UNIQUE INDEX unique_active_seat_reservation
+--     ON seat_reservation(showtime_id, seat_id)
+--     WHERE status IN ('HOLD', 'CONFIRMED');

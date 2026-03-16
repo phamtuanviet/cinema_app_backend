@@ -20,5 +20,5 @@ public class LoyaltyAccount {
     @MapsId
     private User user;
 
-    private Integer totalPoints = 0;
+    private Integer availablePoints = 0;
 }

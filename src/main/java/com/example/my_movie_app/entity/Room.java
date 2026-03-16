@@ -19,4 +19,5 @@ public class Room extends BaseEntity {
 
     private String name;
     private Integer totalSeats;
+
 }

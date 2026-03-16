@@ -25,4 +25,7 @@ public class BookingSeat {
     private Seat seat;
 
     private BigDecimal seatPrice;
+
+    @ManyToOne
+    private Showtime showtime;
 }

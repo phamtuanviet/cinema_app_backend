@@ -6,6 +6,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 @Table(name = "bookings")
@@ -28,10 +29,24 @@ public class Booking extends BaseEntity{
 
     private String qrCodeUrl;
 
+    private BigDecimal seatAmount;
+
+    private BigDecimal comboAmount;
+
+    private BigDecimal voucherDiscount;
+
+    private BigDecimal pointDiscount;
+
     private BigDecimal totalAmount;
 
     @Enumerated(EnumType.STRING)
     private BookingStatus status = BookingStatus.PENDING;
 
     private LocalDateTime cancelledAt;
+
+    @ManyToOne
+    private SeatHoldSession session;
+
+    @OneToMany(mappedBy = "booking")
+    private List<Payment> payments;
 }

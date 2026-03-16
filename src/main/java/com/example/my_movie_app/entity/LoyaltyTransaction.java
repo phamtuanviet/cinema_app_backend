@@ -15,12 +15,17 @@ import lombok.*;
 public class LoyaltyTransaction extends BaseEntity {
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private LoyaltyAccount account;
 
     private Integer points;
 
     @Enumerated(EnumType.STRING)
     private LoyaltyTransactionType type;
+
+    private String description;
+
+    @ManyToOne
+    private Booking booking;
+
 
 }

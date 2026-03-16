@@ -13,6 +13,7 @@ import java.util.concurrent.TimeUnit;
 public class OtpService {
 
     private final RedisTemplate<String, String> redisTemplate;
+    private final EmailService emailService;
 
     private static final long OTP_TTL = 5; // minutes
 
@@ -27,7 +28,8 @@ public class OtpService {
         redisTemplate.opsForValue()
                 .set(key, otp, OTP_TTL, TimeUnit.MINUTES);
 
-        System.out.println(type + " OTP for " + email + ": " + otp);
+
+        emailService.sendOtpEmail(email,otp,type);
     }
 
     public boolean verifyOtp(String email, String otp, OtpType type) {

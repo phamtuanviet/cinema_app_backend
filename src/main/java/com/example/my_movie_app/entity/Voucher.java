@@ -1,5 +1,6 @@
 package com.example.my_movie_app.entity;
 
+import com.example.my_movie_app.enums.DiscountType;
 import com.example.my_movie_app.enums.VoucherDiscountType;
 import jakarta.persistence.*;
 import lombok.*;
@@ -8,34 +9,32 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Entity
 @Table(name = "vouchers")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Voucher {
+@Entity
+public class Voucher extends BaseEntity {
 
-    @Id
-    @GeneratedValue
-    private UUID id;
-
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String code;
 
     @Enumerated(EnumType.STRING)
-    private VoucherDiscountType discountType = VoucherDiscountType.FIXED;
+    private DiscountType discountType;
 
-    private BigDecimal discountAmount;
+    private BigDecimal discountValue;
 
-    private BigDecimal maxDiscountAmount;
+    private BigDecimal minOrderValue;
 
-    private BigDecimal minSpend = BigDecimal.ZERO;
+    private BigDecimal maxDiscount;
+
+    private LocalDateTime expiryDate;
+
+    private Boolean active = true;
 
     private Integer usageLimit;
 
-    private Boolean isActive = true;
-
-    private LocalDateTime expiresAt;
+    private Integer usedCount;
 }

@@ -28,10 +28,16 @@ public class Payment {
 
     private String paymentMethod;
 
-    private String transactionId;
+
+    private String gatewayTransactionId;
+
+    // mã order gửi sang gateway (vnp_TxnRef)
+    private String gatewayOrderId;
 
     @Enumerated(EnumType.STRING)
     private PaymentStatus status = PaymentStatus.PENDING;
+
+    private String gatewayResponseCode;
 
     private LocalDateTime paymentTime = LocalDateTime.now();
 }
