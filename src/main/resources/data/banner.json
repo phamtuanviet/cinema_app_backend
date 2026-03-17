@@ -1,0 +1,37 @@
+[
+  {
+    "imageUrl": "https://image.tmdb.org/t/p/original/9Gtg2DzBhmYamXBS1hKAhiwbBKS.jpg",
+    "actionType": "URL",
+    "actionValue": "https://www.marvel.com",
+    "isActive": true,
+    "priority": 10
+  },
+  {
+    "imageUrl": "https://image.tmdb.org/t/p/original/t6HIqrRAclMCA60NsSmeqe9RmNV.jpg",
+    "actionType": "URL",
+    "actionValue": "https://www.dc.com",
+    "isActive": true,
+    "priority": 8
+  },
+  {
+    "imageUrl": "https://image.tmdb.org/t/p/original/8UlWHLMpgZm9bx6QYh0NFoq67TZ.jpg",
+    "actionType": "URL",
+    "actionValue": "https://www.netflix.com",
+    "isActive": true,
+    "priority": 7
+  },
+  {
+    "imageUrl": "https://image.tmdb.org/t/p/original/r7Dfg9aRZ78gJsmDlCirIIlNH3d.jpg",
+    "actionType": "URL",
+    "actionValue": "https://www.disneyplus.com",
+    "isActive": true,
+    "priority": 6
+  },
+  {
+    "imageUrl": "https://image.tmdb.org/t/p/original/3CxUndGhUcZdt1Zggjdb2HkLLQX.jpg",
+    "actionType": "URL",
+    "actionValue": "https://www.warnerbros.com",
+    "isActive": true,
+    "priority": 5
+  }
+]

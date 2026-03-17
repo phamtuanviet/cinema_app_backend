@@ -1,0 +1,151 @@
+[
+  {
+    "title": "Dune: Part Two",
+    "description": "Phần tiếp theo của câu chuyện sử thi về Paul Atreides khi anh liên minh với người Fremen để trả thù những kẻ đã phá hủy gia đình mình. Trong hành trình đó, Paul phải đối mặt với những lựa chọn khó khăn giữa tình yêu, quyền lực và số phận đã được tiên tri từ trước.",
+    "durationMinutes": 166,
+    "releaseDate": "2024-03-01",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/dune2.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=Way9Dexny3w",
+    "ageRating": "P13",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Khoa học viễn tưởng" },
+      { "name": "Phiêu lưu" }
+    ]
+  },
+  {
+    "title": "Oppenheimer",
+    "description": "Bộ phim tiểu sử xoay quanh J. Robert Oppenheimer và quá trình phát triển bom nguyên tử. Phim không chỉ nói về khoa học mà còn đào sâu vào trách nhiệm đạo đức và hậu quả của phát minh đối với nhân loại.",
+    "durationMinutes": 180,
+    "releaseDate": "2023-07-21",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/oppenheimer.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=uYPbbksJxIg",
+    "ageRating": "P16",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Chính kịch" },
+      { "name": "Lịch sử" }
+    ]
+  },
+  {
+    "title": "Interstellar",
+    "description": "Khi Trái Đất đứng trước nguy cơ diệt vong, một nhóm phi hành gia được cử đi tìm hành tinh mới. Bộ phim kết hợp giữa khoa học, cảm xúc gia đình và những khái niệm vật lý phức tạp.",
+    "durationMinutes": 169,
+    "releaseDate": "2014-11-07",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/interstellar.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=zSWdZVtXT7E",
+    "ageRating": "P13",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Khoa học viễn tưởng" },
+      { "name": "Chính kịch" }
+    ]
+  },
+  {
+    "title": "Parasite",
+    "description": "Một gia đình nghèo tìm cách xâm nhập vào cuộc sống của một gia đình giàu có bằng những kế hoạch tinh vi, nhưng mọi thứ dần trở nên vượt khỏi tầm kiểm soát.",
+    "durationMinutes": 132,
+    "releaseDate": "2019-05-30",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/parasite.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=5xH0HfJHsaY",
+    "ageRating": "P16",
+    "language": "Korean",
+    "isActive": true,
+    "genres": [
+      { "name": "Giật gân" },
+      { "name": "Chính kịch" }
+    ]
+  },
+  {
+    "title": "Avengers: Endgame",
+    "description": "Sau cú búng tay của Thanos, các siêu anh hùng còn sống sót phải hợp lực để cứu vũ trụ và đảo ngược tình thế.",
+    "durationMinutes": 181,
+    "releaseDate": "2019-04-26",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/endgame.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=TcMBFSGVi1c",
+    "ageRating": "P13",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Hành động" },
+      { "name": "Khoa học viễn tưởng" }
+    ]
+  },
+  {
+    "title": "The Batman",
+    "description": "Batman điều tra một loạt vụ án mạng bí ẩn tại Gotham và phải đối đầu với Riddler – kẻ thù nguy hiểm với những câu đố chết người.",
+    "durationMinutes": 176,
+    "releaseDate": "2022-03-04",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/batman.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=mqqft2x_Aa4",
+    "ageRating": "P16",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Hành động" },
+      { "name": "Tội phạm" }
+    ]
+  },
+  {
+    "title": "Your Name",
+    "description": "Hai người trẻ sống ở hai nơi khác nhau bất ngờ hoán đổi cơ thể cho nhau, từ đó nảy sinh một mối liên kết đặc biệt vượt qua không gian và thời gian.",
+    "durationMinutes": 112,
+    "releaseDate": "2016-08-26",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/yourname.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=xU47nhruN-Q",
+    "ageRating": "P13",
+    "language": "Japanese",
+    "isActive": true,
+    "genres": [
+      { "name": "Hoạt hình" },
+      { "name": "Lãng mạn" }
+    ]
+  },
+  {
+    "title": "The Conjuring",
+    "description": "Một gia đình bị ám bởi thế lực siêu nhiên và phải nhờ đến sự giúp đỡ của hai nhà điều tra tâm linh để giải quyết.",
+    "durationMinutes": 112,
+    "releaseDate": "2013-07-19",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/conjuring.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=k10ETZ41q5o",
+    "ageRating": "P18",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Kinh dị" },
+      { "name": "Giật gân" }
+    ]
+  },
+  {
+    "title": "Fast & Furious 7",
+    "description": "Nhóm của Dominic tiếp tục thực hiện những phi vụ nguy hiểm và đối đầu với kẻ thù mới để bảo vệ gia đình của mình.",
+    "durationMinutes": 137,
+    "releaseDate": "2015-04-03",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/ff7.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=Skpu5HaVkOc",
+    "ageRating": "P13",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Hành động" }
+    ]
+  },
+  {
+    "title": "Joker",
+    "description": "Câu chuyện về một người đàn ông bị xã hội bỏ rơi và dần trở thành biểu tượng của sự hỗn loạn trong thành phố Gotham.",
+    "durationMinutes": 122,
+    "releaseDate": "2019-10-04",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/joker.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=zAGVQLHvwOY",
+    "ageRating": "P18",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Chính kịch" },
+      { "name": "Tội phạm" }
+    ]
+  }
+]

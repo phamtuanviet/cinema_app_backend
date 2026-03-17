@@ -1,0 +1,152 @@
+[
+  {
+    "title": "Inception",
+    "description": "Dom Cobb là một kẻ trộm tài ba chuyên đánh cắp bí mật từ tiềm thức của con người khi họ đang trong trạng thái mơ. Anh được trao một cơ hội chuộc lại lỗi lầm trong quá khứ nếu có thể thực hiện một nhiệm vụ gần như bất khả thi: gieo một ý tưởng vào tâm trí người khác. Khi các tầng giấc mơ chồng chéo lên nhau, ranh giới giữa thực và ảo dần bị phá vỡ, kéo theo những nguy hiểm khó lường.",
+    "durationMinutes": 148,
+    "releaseDate": "2010-07-16",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=YoHD9XEInc0",
+    "ageRating": "PG-13",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Khoa học viễn tưởng" },
+      { "name": "Hành động" }
+    ]
+  },
+  {
+    "title": "Interstellar",
+    "description": "Khi Trái Đất đứng trước nguy cơ diệt vong, một nhóm phi hành gia được cử đi xuyên qua lỗ sâu không gian để tìm kiếm hành tinh mới cho nhân loại. Trên hành trình đầy gian nan, họ phải đối mặt với những hiện tượng kỳ lạ về thời gian và không gian, nơi mỗi quyết định đều có thể thay đổi số phận của cả loài người.",
+    "durationMinutes": 169,
+    "releaseDate": "2014-11-07",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/rAiYTfKGqDCRIIqo664sY9XZIvQ.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=zSWdZVtXT7E",
+    "ageRating": "PG-13",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Khoa học viễn tưởng" },
+      { "name": "Chính kịch" }
+    ]
+  },
+  {
+    "title": "The Dark Knight",
+    "description": "Batman phải đối đầu với Joker – một tên tội phạm nguy hiểm và khó lường, kẻ muốn gieo rắc sự hỗn loạn lên toàn thành phố Gotham. Cuộc chiến giữa trật tự và hỗn loạn khiến Batman phải đối diện với những giới hạn đạo đức của chính mình.",
+    "durationMinutes": 152,
+    "releaseDate": "2008-07-18",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/qJ2tW6WMUDux911r6m7haRef0WH.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=EXeTwQWrcwY",
+    "ageRating": "PG-13",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Hành động" },
+      { "name": "Tội phạm" }
+    ]
+  },
+  {
+    "title": "Avengers: Endgame",
+    "description": "Sau khi Thanos xóa sổ một nửa vũ trụ, các siêu anh hùng còn lại phải tập hợp lần cuối để đảo ngược thảm họa. Đây là trận chiến quyết định, nơi họ phải hy sinh tất cả để mang lại hy vọng cho nhân loại.",
+    "durationMinutes": 181,
+    "releaseDate": "2019-04-26",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/or06FN3Dka5tukK1e9sl16pB3iy.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=TcMBFSGVi1c",
+    "ageRating": "PG-13",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Hành động" },
+      { "name": "Phiêu lưu" }
+    ]
+  },
+  {
+    "title": "Parasite",
+    "description": "Một gia đình nghèo tìm cách xâm nhập vào cuộc sống của một gia đình giàu có bằng cách giả danh những người lao động có chuyên môn. Khi sự thật dần bị phơi bày, những mâu thuẫn giai cấp và bi kịch xã hội bắt đầu bùng nổ.",
+    "durationMinutes": 132,
+    "releaseDate": "2019-05-30",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/7IiTTgloJzvGI1TAYymCfbfl3vT.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=5xH0HfJHsaY",
+    "ageRating": "R",
+    "language": "Korean",
+    "isActive": true,
+    "genres": [
+      { "name": "Chính kịch" },
+      { "name": "Giật gân" }
+    ]
+  },
+  {
+    "title": "Joker",
+    "description": "Arthur Fleck là một diễn viên hài thất bại, luôn bị xã hội ruồng bỏ. Dần dần, anh rơi vào trạng thái mất kiểm soát và biến thành Joker – biểu tượng của sự hỗn loạn và nổi loạn tại Gotham.",
+    "durationMinutes": 122,
+    "releaseDate": "2019-10-04",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/udDclJoHjfjb8Ekgsd4FDteOkCU.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=zAGVQLHvwOY",
+    "ageRating": "R",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Chính kịch" },
+      { "name": "Tội phạm" }
+    ]
+  },
+  {
+    "title": "Titanic",
+    "description": "Câu chuyện tình yêu giữa Jack – một họa sĩ nghèo và Rose – cô gái quý tộc, diễn ra trên con tàu Titanic định mệnh. Tình yêu của họ nảy nở giữa chuyến hành trình, nhưng phải đối mặt với thảm họa chìm tàu kinh hoàng.",
+    "durationMinutes": 195,
+    "releaseDate": "1997-12-19",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/kHXEpyfl6zqn8a6YuozZUujufXf.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=kVrqfYjkTdQ",
+    "ageRating": "PG-13",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Lãng mạn" },
+      { "name": "Chính kịch" }
+    ]
+  },
+  {
+    "title": "The Matrix",
+    "description": "Neo – một hacker – phát hiện ra thế giới mà anh đang sống thực chất chỉ là một mô phỏng do máy móc tạo ra. Anh tham gia vào cuộc chiến giải phóng loài người khỏi sự kiểm soát của trí tuệ nhân tạo.",
+    "durationMinutes": 136,
+    "releaseDate": "1999-03-31",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/aoiJPO8G1QdM6RzV4b4f8xwz0fF.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=vKQi3bBA1y8",
+    "ageRating": "R",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Khoa học viễn tưởng" },
+      { "name": "Hành động" }
+    ]
+  },
+  {
+    "title": "Coco",
+    "description": "Miguel, một cậu bé yêu âm nhạc, vô tình bước vào Thế giới Người Chết. Tại đây, cậu khám phá ra những bí mật gia đình và tìm lại đam mê thực sự của mình.",
+    "durationMinutes": 105,
+    "releaseDate": "2017-11-22",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/eKi8dIrr8voobbaGzDpe8w0PVbC.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=Rvr68u6k5sI",
+    "ageRating": "PG",
+    "language": "English",
+    "isActive": true,
+    "genres": [
+      { "name": "Hoạt hình" },
+      { "name": "Gia đình" }
+    ]
+  },
+  {
+    "title": "Your Name",
+    "description": "Hai thiếu niên sống ở hai nơi khác nhau bất ngờ hoán đổi cơ thể cho nhau. Qua những trải nghiệm kỳ lạ, họ dần hình thành một mối liên kết đặc biệt và tìm cách gặp nhau để thay đổi định mệnh.",
+    "durationMinutes": 106,
+    "releaseDate": "2016-08-26",
+    "posterUrl": "https://image.tmdb.org/t/p/w500/q719jXXEzOoYaps6babgKnONONX.jpg",
+    "trailerUrl": "https://www.youtube.com/watch?v=xU47nhruN-Q",
+    "ageRating": "PG",
+    "language": "Japanese",
+    "isActive": true,
+    "genres": [
+      { "name": "Hoạt hình" },
+      { "name": "Lãng mạn" }
+    ]
+  }
+]
