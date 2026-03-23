@@ -1,5 +1,6 @@
 package com.example.my_movie_app.controller;
 
+import com.example.my_movie_app.dto.BannerDto;
 import com.example.my_movie_app.entity.Banner;
 import com.example.my_movie_app.service.BannerService;
 import lombok.RequiredArgsConstructor;
@@ -9,7 +10,7 @@ import java.util.List;
 import java.util.UUID;
 
 @RestController
-@RequestMapping("/api/banners")
+@RequestMapping("/api/banner")
 @RequiredArgsConstructor
 public class BannerController {
 
@@ -17,9 +18,11 @@ public class BannerController {
 
     // 📱 API cho mobile (chỉ lấy banner active)
     @GetMapping("/active")
-    public List<Banner> getActive() {
+    public List<BannerDto> getActive() {
         return bannerService.getActiveBanners();
     }
+
+
 
     // 📄 Admin - lấy tất cả
     @GetMapping

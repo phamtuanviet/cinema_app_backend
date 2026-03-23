@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Entity
 @Table(name = "seats")
@@ -28,4 +29,5 @@ public class Seat extends BaseEntity {
     private SeatType seatType = SeatType.NORMAL;
 
     private BigDecimal priceModifier;
+
 }

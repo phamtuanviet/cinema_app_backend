@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
+import java.util.UUID;
 
 @Service
 public class JwtService {
@@ -21,7 +22,7 @@ public class JwtService {
     private static final long REFRESH_EXP = 1000L * 60 * 60 * 24 * 30; // 30 days
     private static final long RESET_EXP = 1000 * 60 * 10; // 10 min
 
-    private Key getKey() {
+    public Key getKey() {
         return Keys.hmacShaKeyFor(
                 SECRET.getBytes(StandardCharsets.UTF_8)
         );
@@ -80,18 +81,23 @@ public class JwtService {
         return email.equals(user.getEmail()) && !isExpired(token);
     }
 
-    private boolean isExpired(String token) {
+    public boolean isExpired(String token) {
 
         Date exp = parse(token).getBody().getExpiration();
 
         return exp.before(new Date());
     }
 
-    private Jws<Claims> parse(String token) {
+    public Jws<Claims> parse(String token) {
 
         return Jwts.parserBuilder()
                 .setSigningKey(getKey())
                 .build()
                 .parseClaimsJws(token);
+    }
+
+    public UUID extractUserId(String token) {
+        Object userId = parse(token).getBody().get("userId");
+        return UUID.fromString(userId.toString());
     }
 }

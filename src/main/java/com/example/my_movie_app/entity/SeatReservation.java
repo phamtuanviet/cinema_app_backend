@@ -4,8 +4,7 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Entity
-@Table(name = "seat_reservations",
-        uniqueConstraints = @UniqueConstraint(columnNames = {"showtime_id", "seat_id"}))
+@Table(name = "seat_reservations")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -21,10 +20,9 @@ public class SeatReservation extends BaseEntity {
     @JoinColumn(name = "seat_id")
     private Seat seat;
 
-//    @ManyToOne
-//    @JoinColumn(name = "user_id")
-//    private User user;
-
     @ManyToOne
     private SeatHoldSession session;
+
+    @Column(name = "is_cancel", nullable = false)
+    private boolean isCancel = false;
 }

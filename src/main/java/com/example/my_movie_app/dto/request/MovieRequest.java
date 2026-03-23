@@ -1,12 +1,17 @@
 package com.example.my_movie_app.dto.request;
 
 
-import lombok.Data;
+import lombok.*;
 
 import java.time.LocalDate;
 import java.util.List;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
 public class MovieRequest {
 
     private String title;

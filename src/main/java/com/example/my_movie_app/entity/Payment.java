@@ -35,7 +35,7 @@ public class Payment {
     private String gatewayOrderId;
 
     @Enumerated(EnumType.STRING)
-    private PaymentStatus status = PaymentStatus.PENDING;
+    private PaymentStatus status ;
 
     private String gatewayResponseCode;
 

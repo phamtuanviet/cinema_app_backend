@@ -1,16 +1,16 @@
 package com.example.my_movie_app.dto.response;
 
 
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class CreatePaymentResponse {
 
     private String paymentUrl;
-
     private String paymentMethod;
-
     private String message;
 }

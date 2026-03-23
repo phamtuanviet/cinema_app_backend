@@ -1,5 +1,6 @@
 package com.example.my_movie_app.controller;
 
+import com.example.my_movie_app.dto.MovieDto;
 import com.example.my_movie_app.entity.Movie;
 import com.example.my_movie_app.service.MovieService;
 import lombok.RequiredArgsConstructor;
@@ -21,6 +22,16 @@ public class MovieController {
         return movieService.create(movie);
     }
 
+    @GetMapping("/coming-soon")
+    public List<MovieDto> getMoviesComingSoon() {
+        return movieService.getMoviesComingSoon();
+    }
+
+    @GetMapping("/now-showing")
+    public List<MovieDto> getMoviesNowShowing() {
+        return movieService.getMoviesNowShowing();
+    }
+
     @PutMapping("/{id}")
     public Movie update(@PathVariable UUID id, @RequestBody Movie movie) {
         return movieService.update(id, movie);
@@ -33,17 +44,7 @@ public class MovieController {
     }
 
     @GetMapping("/{id}")
-    public Movie getById(@PathVariable UUID id) {
-        return movieService.getById(id);
-    }
-
-    @GetMapping
-    public List<Movie> getAll() {
-        return movieService.getAll();
-    }
-
-    @GetMapping("/search")
-    public List<Movie> search(@RequestParam String keyword) {
-        return movieService.search(keyword);
+    public MovieDto getById(@PathVariable UUID id) {
+        return movieService.getMovieById(id);
     }
 }

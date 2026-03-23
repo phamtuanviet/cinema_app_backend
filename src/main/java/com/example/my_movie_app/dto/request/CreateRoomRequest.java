@@ -1,11 +1,16 @@
 package com.example.my_movie_app.dto.request;
 
-import lombok.Data;
+import lombok.*;
 
 import java.util.List;
 import java.util.UUID;
 
-@Data
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+
 public class CreateRoomRequest {
 
     private UUID cinemaId;

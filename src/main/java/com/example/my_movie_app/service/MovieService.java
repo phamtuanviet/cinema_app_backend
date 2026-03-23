@@ -1,10 +1,13 @@
 package com.example.my_movie_app.service;
 
+import com.example.my_movie_app.dto.MovieDto;
 import com.example.my_movie_app.dto.request.MovieRequest;
 import com.example.my_movie_app.entity.Genre;
 import com.example.my_movie_app.entity.Movie;
+import com.example.my_movie_app.entity.Showtime;
 import com.example.my_movie_app.repository.GenreRepository;
 import com.example.my_movie_app.repository.MovieRepository;
+import com.example.my_movie_app.repository.ShowtimeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +17,9 @@ import com.fasterxml.jackson.core.type.TypeReference;
 
 
 import java.io.InputStream;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.*;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -24,6 +30,7 @@ public class MovieService {
 
     private final MovieRepository movieRepository;
     private final GenreRepository genreRepository;
+    private final ShowtimeRepository showtimeRepository;
     private final ObjectMapper objectMapper;
 
     @Transactional
@@ -155,16 +162,108 @@ public class MovieService {
         movieRepository.save(movie);
     }
 
-    public Movie getById(UUID id) {
-        return movieRepository.findById(id)
+    public MovieDto getMovieById(UUID id) {
+        Movie m = movieRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Movie not found"));
+        System.out.println(
+                "Domixi " + m.getGenres()
+                        .stream()
+                        .map(Genre::getName)
+                        .toList()
+        );
+        return new MovieDto(
+                m.getId(),
+                m.getTitle(),
+                m.getDurationMinutes(),
+                m.getPosterUrl(),
+                m.getAgeRating(),
+                m.getLanguage(),
+                m.getTrailerUrl(),
+                m.getReleaseDate().toString(),
+                m.getDescription(),
+                m.getGenres().stream()
+                        .map(Genre::getName)
+                        .toList()
+        );
     }
 
     public List<Movie> getAll() {
         return movieRepository.findByIsActiveTrue();
     }
 
-    public List<Movie> search(String keyword) {
-        return movieRepository.findByTitleContainingIgnoreCase(keyword);
+    public String getMovieStatus(Movie movie) {
+        LocalDate today = LocalDate.now(ZoneId.of("Asia/Ho_Chi_Minh"));
+
+        if (movie.getReleaseDate().isAfter(today)) {
+            return "COMING_SOON";
+        }
+
+        boolean hasFutureShowtime = showtimeRepository.existsByMovieIdAndStartTimeAfter(
+                movie.getId(),
+                LocalDateTime.now(ZoneId.of("Asia/Ho_Chi_Minh"))
+        );
+
+        if (hasFutureShowtime) {
+            return "NOW_SHOWING";
+        }
+
+        return "ENDED";
     }
+
+
+    public List<MovieDto> getMoviesNowShowing() {
+
+        ZoneId zone = ZoneId.of("Asia/Ho_Chi_Minh");
+
+        LocalDateTime now = LocalDateTime.now(zone);
+        LocalDate today = LocalDate.now(zone);
+
+        List<Movie> movies = showtimeRepository.findNowShowing(now, today);
+
+        if (movies.isEmpty()) return List.of();
+
+        return movies.stream()
+                .map(m -> new MovieDto(
+                        m.getId(),
+                        m.getTitle(),
+                        m.getDurationMinutes(),
+                        m.getPosterUrl(),
+                        m.getAgeRating(),
+                        m.getLanguage(),
+                        m.getTrailerUrl(),
+                        m.getReleaseDate().toString(),
+                        m.getDescription(),
+                        m.getGenres().stream()
+                                .map(Genre::getName)
+                                .toList()
+                ))
+                .toList();
+    }
+    public List<MovieDto> getMoviesComingSoon() {
+        ZoneId zone = ZoneId.of("Asia/Ho_Chi_Minh");
+
+        LocalDate today = LocalDate.now(zone);
+
+        List<Movie> movies = showtimeRepository.findComingSoon(today);
+
+        if (movies.isEmpty()) return List.of();
+
+        return movies.stream()
+                .map(m -> new MovieDto(
+                        m.getId(),
+                        m.getTitle(),
+                        m.getDurationMinutes(),
+                        m.getPosterUrl(),
+                        m.getAgeRating(),
+                        m.getLanguage(),
+                        m.getTrailerUrl(),
+                        m.getReleaseDate().toString(),
+                        m.getDescription(),
+                        m.getGenres().stream()
+                                .map(Genre::getName)
+                                .toList()
+                ))
+                .toList();
+    }
+
 }

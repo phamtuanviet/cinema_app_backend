@@ -34,6 +34,24 @@ public class CloudinaryService {
         }
     }
 
+    public String uploadBytes(byte[] data, String fileName) {
+        try {
+
+            Map uploadResult = cloudinary.uploader().upload(
+                    data,
+                    ObjectUtils.asMap(
+                            "public_id", "cinema/qrcode/" + fileName,
+                            "overwrite", true
+                    )
+            );
+
+            return uploadResult.get("secure_url").toString();
+
+        } catch (Exception e) {
+            throw new RuntimeException("Upload QR failed");
+        }
+    }
+
 
     public void deleteImage(String publicId) {
 
