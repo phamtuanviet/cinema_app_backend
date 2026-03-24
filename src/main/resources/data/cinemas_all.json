@@ -1980,34 +1980,6 @@
     "adapter": "ticketing"
   },
   {
-    "id": "8a247454-e634-46da-9cc7-1ecc1bac39b6",
-    "name": "Viện Trao đổi Văn Hóa Pháp - IDECAF",
-    "address": "31 Thái Văn Lung Quận 1",
-    "description": "Xem Lịch chiếu và Mua vé Viện Trao đổi Văn Hóa Pháp - IDECAF nhanh chóng tại Moveek.",
-    "slug": "vien-trao-doi-van-hoa-phap-idecaf",
-    "cineplex": {
-      "id": 18798,
-      "name": "Viện Trao Đổi Văn Hóa Pháp",
-      "slug": "vien-trao-doi-van-hoa-phap",
-      "logo": null,
-      "sponsored": false
-    },
-    "region": {
-      "id": 1,
-      "name": "Tp. Hồ Chí Minh",
-      "slug": "ho-chi-minh"
-    },
-    "latitude": null,
-    "longitude": null,
-    "status": "publish",
-    "pricing": null,
-    "opening_soon": false,
-    "closed": false,
-    "ticketing": false,
-    "sponsored": false,
-    "adapter": null
-  },
-  {
     "id": "19fb1aad-3590-4800-b85e-bc5bdefd144b",
     "name": "Beta Bắc Giang",
     "address": "Tầng 4, Co.opmart Bắc Giang, 51 Nguyễn Văn Cừ, P.Ngô Quyền, Tp. Bắc Giang",
@@ -2138,39 +2110,6 @@
     "ticketing": true,
     "sponsored": false,
     "adapter": "ticketing"
-  },
-  {
-    "id": "2eeca7c1-88e6-47b6-92ec-c49f83394f01",
-    "name": "BHD Star Long Khánh",
-    "address": "430 Hồ Thị Hương, Phường Xuân An, Thành Phố Long Khánh, Tỉnh Đồng Nai",
-    "description": "Lịch chiếu phim & Mua vé BHD Star Long Khánh- rạp BHD toàn quốc đầy đủ & tiện lợi nhất.\r\nCụm rạp BHD Star Long Khánh có 4 phòng chiếu, 498 ghế. Là cụm rạp mối nhất thuộc chuỗi rạp chiếu phim BHD Star Cineplex. Nhắm đến đối tượng khán giả trẻ trên trục đường rất nhộn nhịp, BHD Star Long Khánh luôn có giá vé rất cạnh tranh.",
-    "slug": "bhd-star-long-khanh",
-    "cineplex": {
-      "id": 18788,
-      "name": "BHD Star Cineplex",
-      "slug": "bhd-cineplex",
-      "logo": {
-        "sizes": {
-          "tiny": "https://cdn.moveek.com/storage/media/cache/tiny/dcc08eb55eca8002f729ae0dff98a2ae6c031db0.png",
-          "square": "https://cdn.moveek.com/storage/media/cache/square/dcc08eb55eca8002f729ae0dff98a2ae6c031db0.png"
-        }
-      },
-      "sponsored": false
-    },
-    "region": {
-      "id": 3,
-      "name": "Đồng Nai",
-      "slug": "dong-nai"
-    },
-    "latitude": null,
-    "longitude": null,
-    "status": "publish",
-    "pricing": null,
-    "opening_soon": false,
-    "closed": false,
-    "ticketing": false,
-    "sponsored": false,
-    "adapter": null
   },
   {
     "id": "0e6b23fe-6243-4be8-abf4-5aa37d462cbb",
@@ -3053,67 +2992,6 @@
     "adapter": "ticketing"
   },
   {
-    "id": "332ef8bb-412f-461b-a5bc-f4cb66c1f638",
-    "name": "IF Đà Nẵng",
-    "address": "33 Trần Phú, Hải Châu, thành phố Đà Nẵng",
-    "description": "Viện Pháp tại Đà Nẵng được thành lập từ năm 1995, được xem như là một trung tâm ngôn ngữ và văn hoá với nhiều hoạt động phong phú. Ở đây, còn có thư viện đa phương tiện và Văn phòng tư vấn du học Pháp. \r\nĐây cũng là nơi giao lưu gặp gỡ của những người  nói tiếng Pháp tại Đà Nẵng, dành cho mọi đối tượng : học sinh, sinh viên, giáo viên, bác sĩ, người đi làm, người nghỉ hưu …",
-    "slug": "if-da-nang",
-    "cineplex": {
-      "id": 18798,
-      "name": "Viện Trao Đổi Văn Hóa Pháp",
-      "slug": "vien-trao-doi-van-hoa-phap",
-      "logo": null,
-      "sponsored": false
-    },
-    "region": {
-      "id": 7,
-      "name": "Đà Nẵng",
-      "slug": "da-nang"
-    },
-    "latitude": null,
-    "longitude": null,
-    "status": "publish",
-    "pricing": null,
-    "opening_soon": false,
-    "closed": false,
-    "ticketing": false,
-    "sponsored": false,
-    "adapter": null
-  },
-  {
-    "id": "51540a94-0414-46a6-b4d0-ac5fb5523615",
-    "name": "CGV Vincom Cẩm Phả",
-    "address": "Vincom Shophouse Cẩm Phả - Quốc lộ 18, Phường Cẩm Bình, Thành phố Cẩm Phả, tỉnh Quảng Ninh",
-    "description": "Xem Lịch chiếu và Mua vé CGV Vincom Cẩm Phả- rạp CGV toàn quốc dễ dàng - nhanh chóng tại Moveek.\r\nRạp CGV Vincom Cẩm Phả nằm ở Vincom Cẩm Phả, được xây dựng với tiêu chuẩn rạp Hollywood, chuẩn âm thanh Dolby 7.1, màn hình lớn, sắc nét. CGV Vincom Cẩm Phả đã là rạp chiếu phim thứ 4 thuộc CGV cinema ra mắt tại Quảng Ninh. Dù thống lĩnh thị trường rạp chiếu phim tại Quảng Ninh, CGV Vincom Cẩm Phả với 3 phòng chiếu - 411 ghế, chắc chắn sẽ vẫn duy trì được chất lượng tốt nhất cùng giá vé hấp dẫn nhất.",
-    "slug": "cgv-vincom-cam-pha",
-    "cineplex": {
-      "id": 18784,
-      "name": "CGV Cinemas",
-      "slug": "cgv-cineplex",
-      "logo": {
-        "sizes": {
-          "tiny": "https://cdn.moveek.com/storage/media/cache/tiny/524ba157cd271c9c24d15f367a57c13abc26af06.jpg",
-          "square": "https://cdn.moveek.com/storage/media/cache/square/524ba157cd271c9c24d15f367a57c13abc26af06.jpg"
-        }
-      },
-      "sponsored": false
-    },
-    "region": {
-      "id": 8,
-      "name": "Quảng Ninh",
-      "slug": "quang-ninh"
-    },
-    "latitude": null,
-    "longitude": null,
-    "status": "publish",
-    "pricing": null,
-    "opening_soon": false,
-    "closed": false,
-    "ticketing": true,
-    "sponsored": false,
-    "adapter": "affiliate"
-  },
-  {
     "id": "15d15da7-5423-491d-818d-0f12e126dc04",
     "name": "CGV Vincom Hạ Long",
     "address": "Tầng 4, TTTM Vincom Center Hạ Long, Khu Cột Đồng Hồ, P. Bạch Đằng, Tp. Hạ Long",
@@ -3738,39 +3616,6 @@
     },
     "latitude": 21.036337,
     "longitude": 105.782455,
-    "status": "publish",
-    "pricing": null,
-    "opening_soon": false,
-    "closed": false,
-    "ticketing": true,
-    "sponsored": false,
-    "adapter": "affiliate"
-  },
-  {
-    "id": "e2dac30c-5e07-45b1-8145-8641811f56c2",
-    "name": "CGV Machinco",
-    "address": "Tầng 7, Trung tâm thương mại Machinco, 10 Trần Phú, Q, Hà Đông, Hanoi City",
-    "description": "Lịch chiếu phim & Mua vé CGV Machinco- rạp CGV toàn quốc đầy đủ & tiện lợi nhất.\r\nRạp CGV Machinco nằm ở TTTM Machinco, được xây dựng với tiêu chuẩn rạp Hollywood, chuẩn âm thanh Dolby 7.1, màn hình lớn, sắc nét. CGV Machinco có vị trí khá đắc địa khi được bao quanh bởi nhóm 4 trường Đại Học và Học viện, rõ ràng là điểm đến giải trí không thể bỏ qua của giới trẻ nơi đây sau những giờ học căng thẳng. Giá vé của CGV Machinco cũng khá cạnh tranh.",
-    "slug": "cgv-machinco",
-    "cineplex": {
-      "id": 18784,
-      "name": "CGV Cinemas",
-      "slug": "cgv-cineplex",
-      "logo": {
-        "sizes": {
-          "tiny": "https://cdn.moveek.com/storage/media/cache/tiny/524ba157cd271c9c24d15f367a57c13abc26af06.jpg",
-          "square": "https://cdn.moveek.com/storage/media/cache/square/524ba157cd271c9c24d15f367a57c13abc26af06.jpg"
-        }
-      },
-      "sponsored": false
-    },
-    "region": {
-      "id": 9,
-      "name": "Hà Nội",
-      "slug": "ha-noi"
-    },
-    "latitude": null,
-    "longitude": null,
     "status": "publish",
     "pricing": null,
     "opening_soon": false,
@@ -4930,34 +4775,6 @@
     "adapter": "voucher"
   },
   {
-    "id": "19494446-72d0-447f-bca3-7d023f456efd",
-    "name": "Viện Trao Đổi Văn Hóa Pháp - IF Huế",
-    "address": "Tòa nhà văn phòng HCC, Tầng 8, 28 Lý Thường Kiệt, Vĩnh Ninh, Thành phố Huế, Thừa Thiên Huế",
-    "description": "Xem Lịch chiếu và Mua vé Viện Trao đổi Văn Hóa Pháp - IF Huế nhanh chóng tại Moveek.",
-    "slug": "vien-trao-doi-van-hoa-phap-if-hue",
-    "cineplex": {
-      "id": 18798,
-      "name": "Viện Trao Đổi Văn Hóa Pháp",
-      "slug": "vien-trao-doi-van-hoa-phap",
-      "logo": null,
-      "sponsored": false
-    },
-    "region": {
-      "id": 11,
-      "name": "Thừa Thiên - Huế",
-      "slug": "hue"
-    },
-    "latitude": null,
-    "longitude": null,
-    "status": "publish",
-    "pricing": null,
-    "opening_soon": false,
-    "closed": false,
-    "ticketing": false,
-    "sponsored": false,
-    "adapter": null
-  },
-  {
     "id": "75b8d7e5-b587-4a8f-98c0-88af6dc623bc",
     "name": "Beta Nha Trang",
     "address": "Số 10 Hoàng Hoa Thám, Lộc Thọ, Tp. Nha Trang",
@@ -5367,39 +5184,6 @@
     },
     "latitude": 10.6999152,
     "longitude": 106.703031,
-    "status": "publish",
-    "pricing": null,
-    "opening_soon": false,
-    "closed": false,
-    "ticketing": true,
-    "sponsored": false,
-    "adapter": "ticketing"
-  },
-  {
-    "id": "90c728fb-cb31-4a95-a80f-0dd88c1ba742",
-    "name": "VŨNG TÀU - Rạp chiếu phim Bạch Đằng Vũng Tàu",
-    "address": "846A Đường Bình Giã, Phường Rạch Dừa, TP. Vũng Tàu",
-    "description": "Xem lịch chiếu phim và Mua vé xem phim tại Bạch Đằng Cinema. \nMoveek - Xem Lịch chiếu toàn quốc đầy đủ & tiện lợi nhất.",
-    "slug": "ba-ria-cinema-dong-xuyen",
-    "cineplex": {
-      "id": 18800,
-      "name": "Bà Rịa Cinema",
-      "slug": "ba-ria-cinema",
-      "logo": {
-        "sizes": {
-          "tiny": "https://cdn.moveek.com/storage/media/cache/tiny/698e0f25a2a57417842004.jpg",
-          "square": "https://cdn.moveek.com/storage/media/cache/square/698e0f25a2a57417842004.jpg"
-        }
-      },
-      "sponsored": false
-    },
-    "region": {
-      "id": 15,
-      "name": "Bà Rịa - Vũng Tàu",
-      "slug": "vung-tau"
-    },
-    "latitude": null,
-    "longitude": null,
     "status": "publish",
     "pricing": null,
     "opening_soon": false,
@@ -6069,39 +5853,6 @@
     "adapter": "ticketing"
   },
   {
-    "id": "00ad27aa-5e50-4ae9-b346-4f8dbca73b62",
-    "name": "Cinestar Lâm Đồng",
-    "address": "713 QL20, Liên Nghĩa, Đức Trọng, Lâm Đồng",
-    "description": "Xem lịch chiếu và mua vé Cinestar Lâm Đồng, rạp Cinestar toàn quốc dễ dàng - nhanh chóng tại Moveek.",
-    "slug": "cinestar-lam-dong",
-    "cineplex": {
-      "id": 18791,
-      "name": "Cinestar",
-      "slug": "cinestar",
-      "logo": {
-        "sizes": {
-          "tiny": "https://cdn.moveek.com/storage/media/cache/tiny/59a2a1753d6416c84b4e05146280584a33448c14.png",
-          "square": "https://cdn.moveek.com/storage/media/cache/square/59a2a1753d6416c84b4e05146280584a33448c14.png"
-        }
-      },
-      "sponsored": true
-    },
-    "region": {
-      "id": 23,
-      "name": "Lâm Đồng",
-      "slug": "lam-dong"
-    },
-    "latitude": null,
-    "longitude": null,
-    "status": "publish",
-    "pricing": null,
-    "opening_soon": false,
-    "closed": false,
-    "ticketing": true,
-    "sponsored": false,
-    "adapter": "ticketing"
-  },
-  {
     "id": "02c98c38-4909-4468-904e-8bd51c490a3d",
     "name": "Lotte Bảo Lộc",
     "address": "Tầng 3, TTTM Vincom Bảo Lộc, 83 Lê Hồng Phong, P.1, Tp. Bảo Lộc, Tỉnh Lâm Đồng",
@@ -6168,34 +5919,6 @@
     "adapter": "ticketing"
   },
   {
-    "id": "ac9fa4ea-0a20-4dd5-a232-d6e6ef0187dd",
-    "name": "Maison de la Francophonie",
-    "address": "21 Trần Hưng Đạo, phường 10, thành phố Đà Lạt",
-    "description": "Maison de la francophonie được thành lập vào tháng 3 năm 2018, là Ngôi nhà cộng đồng Pháp ngữ, nơi duy trì ngôn ngữ Pháp và lan tỏa văn hóa Pháp tại Đà Lạt",
-    "slug": "maison-de-la-francophonie",
-    "cineplex": {
-      "id": 18798,
-      "name": "Viện Trao Đổi Văn Hóa Pháp",
-      "slug": "vien-trao-doi-van-hoa-phap",
-      "logo": null,
-      "sponsored": false
-    },
-    "region": {
-      "id": 23,
-      "name": "Lâm Đồng",
-      "slug": "lam-dong"
-    },
-    "latitude": null,
-    "longitude": null,
-    "status": "publish",
-    "pricing": null,
-    "opening_soon": false,
-    "closed": false,
-    "ticketing": false,
-    "sponsored": false,
-    "adapter": null
-  },
-  {
     "id": "e215adb6-8dcd-4ec3-8dd8-8857887a83b8",
     "name": "Beta TRMall Phú Quốc",
     "address": "Tầng 3, The Residence Phú Quốc, địa chỉ Tổ 5, ấp Đường Bảo, đặc khu Phú Quốc, tỉnh An Giang.",
@@ -6260,39 +5983,6 @@
     "ticketing": true,
     "sponsored": false,
     "adapter": "affiliate"
-  },
-  {
-    "id": "dddb9e0f-3cf4-4510-8358-c7aef9139f19",
-    "name": "Cinestar Kiên Giang",
-    "address": "Trung tâm Thương mại, Lô A2 - Khu 2, Nguyễn Chí Thanh, Rạch Sỏi, Tp. Rạch Giá, Kiên Giang",
-    "description": "Rạp chiếu phim Cinestar Kiên Giang tọa lạc tại Trung tâm Thương mại Rạch Sỏi, Đường Nguyễn Chí Thanh, Phường Rạch Sỏi, Thành phố Rạch Giá, Tỉnh Kiên Giang.",
-    "slug": "cinestar-kien-giang",
-    "cineplex": {
-      "id": 18791,
-      "name": "Cinestar",
-      "slug": "cinestar",
-      "logo": {
-        "sizes": {
-          "tiny": "https://cdn.moveek.com/storage/media/cache/tiny/59a2a1753d6416c84b4e05146280584a33448c14.png",
-          "square": "https://cdn.moveek.com/storage/media/cache/square/59a2a1753d6416c84b4e05146280584a33448c14.png"
-        }
-      },
-      "sponsored": true
-    },
-    "region": {
-      "id": 24,
-      "name": "Kiên Giang",
-      "slug": "kien-giang"
-    },
-    "latitude": null,
-    "longitude": null,
-    "status": "publish",
-    "pricing": null,
-    "opening_soon": false,
-    "closed": false,
-    "ticketing": true,
-    "sponsored": false,
-    "adapter": "ticketing"
   },
   {
     "id": "97317df5-158c-47dc-a42f-05e9b4907a18",
@@ -6701,34 +6391,6 @@
     "ticketing": true,
     "sponsored": false,
     "adapter": "affiliate"
-  },
-  {
-    "id": "4d6c6515-8c53-43d5-b553-6b106054d8e5",
-    "name": "Dabaco Cinema Bắc Ninh",
-    "address": "TTTM Dabaco Lotus Central, 28 Lý Thái Tổ, Tp Bắc Ninh",
-    "description": "Lịch chiếu phim Dabaco Bắc Ninh- Lịch chiếu rạp toàn quốc đầy đủ & tiện lợi nhất. \r\nDabaco Bắc Ninh nằm ở TTTM Dabaco Lotus Central, Lý Thái Tổ, là 1 trong 2 cụm rạp của Dabaco tại Bắc Ninh. Dabaco Bắc Ninh luôn có giá vé cạnh tranh và chất lượng giải trí ổn định, là điểm hẹn của nhiều bạn trẻ trong khu vực.",
-    "slug": "dabaco-cinema-bac-ninh",
-    "cineplex": {
-      "id": 18797,
-      "name": "Dabaco Cinema",
-      "slug": "dabaco-cinema",
-      "logo": null,
-      "sponsored": false
-    },
-    "region": {
-      "id": 33,
-      "name": "Bắc Ninh",
-      "slug": "bac-ninh"
-    },
-    "latitude": null,
-    "longitude": null,
-    "status": "publish",
-    "pricing": null,
-    "opening_soon": false,
-    "closed": false,
-    "ticketing": false,
-    "sponsored": false,
-    "adapter": null
   },
   {
     "id": "9b7017b4-dd89-4cda-bec6-1407a2a0333f",

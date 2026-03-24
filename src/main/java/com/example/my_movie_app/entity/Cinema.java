@@ -24,5 +24,6 @@ public class Cinema extends BaseEntity {
     private String cineplex;
     private Double latitude;
     private Double longitude;
+    private String logoUrl;
     private Boolean isActive = true;
 }

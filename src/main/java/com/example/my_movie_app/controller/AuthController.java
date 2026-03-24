@@ -55,6 +55,7 @@ public class AuthController {
                 request,
                 httpRequest.getHeader("User-Agent"),
                 httpRequest.getRemoteAddr());
+        System.out.println(response);
         return ResponseEntity.ok(response);
     }
 

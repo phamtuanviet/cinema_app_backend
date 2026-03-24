@@ -79,6 +79,9 @@ public class PaymentService {
         payment.setPaymentTime(LocalDateTime.now());
 
         paymentRepository.save(payment);
+        if (booking.getSession() != null) {
+            booking.getSession().setExpiresAt(Instant.now());
+        }
     }
 
     private void handleFail(

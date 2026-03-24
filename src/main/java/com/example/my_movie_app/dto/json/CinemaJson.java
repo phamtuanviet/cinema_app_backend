@@ -27,5 +27,19 @@ public class CinemaJson {
     @JsonIgnoreProperties(ignoreUnknown = true)
     public static class Cineplex {
         private String name;
+        private Logo logo;
     }
+
+    @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Logo {
+        private Sizes sizes;
+    }
+
+    @Data
+    @JsonIgnoreProperties(ignoreUnknown = true)
+    public static class Sizes {
+        private String square;
+    }
+
 }

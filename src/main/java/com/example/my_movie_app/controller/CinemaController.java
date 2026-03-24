@@ -1,5 +1,7 @@
 package com.example.my_movie_app.controller;
 
+import com.example.my_movie_app.dto.CinemaDto;
+import com.example.my_movie_app.dto.RegionDto;
 import com.example.my_movie_app.entity.Cinema;
 import com.example.my_movie_app.service.CinemaService;
 import lombok.RequiredArgsConstructor;
@@ -48,5 +50,30 @@ public class CinemaController {
     @DeleteMapping("/{id}")
     public void deleteCinema(@PathVariable UUID id) {
         cinemaService.deleteCinema(id);
+    }
+
+    @GetMapping("/nearby")
+    public List<CinemaDto> getNearby(
+            @RequestParam double lat,
+            @RequestParam double lng,
+            @RequestParam(defaultValue = "100") double radius
+    ) {
+        return cinemaService.getNearby(lat, lng, radius);
+    }
+
+    // 2. Regions
+    @GetMapping("/regions")
+    public List<RegionDto> getRegions() {
+        return cinemaService.getRegions();
+    }
+
+    // 3. Cinema theo region + distance
+    @GetMapping("/by-region")
+    public List<CinemaDto> getByRegion(
+            @RequestParam String region,
+            @RequestParam double lat,
+            @RequestParam double lng
+    ) {
+        return cinemaService.getByRegion(region, lat, lng);
     }
 }
