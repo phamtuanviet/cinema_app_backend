@@ -2,11 +2,14 @@ package com.example.my_movie_app.controller;
 
 import com.example.my_movie_app.dto.CinemaDto;
 import com.example.my_movie_app.dto.RegionDto;
+import com.example.my_movie_app.dto.response.CinemaShowtimeResponse;
 import com.example.my_movie_app.entity.Cinema;
 import com.example.my_movie_app.service.CinemaService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
 
@@ -16,6 +19,7 @@ import java.util.UUID;
 public class CinemaController {
 
     private final CinemaService cinemaService;
+
 
     @GetMapping
     public List<Cinema> getAllCinemas() {
@@ -75,5 +79,27 @@ public class CinemaController {
             @RequestParam double lng
     ) {
         return cinemaService.getByRegion(region, lat, lng);
+    }
+
+    @GetMapping("/{cinemaId}/showtime-dates")
+    public ResponseEntity<List<LocalDate>> getShowDates(
+            @PathVariable UUID cinemaId
+    ) {
+        return ResponseEntity.ok(
+                cinemaService.getShowDates(cinemaId)
+        );
+    }
+
+    @GetMapping("/{cinemaId}/showtimes")
+    public ResponseEntity<CinemaShowtimeResponse> getShowtimes(
+            @PathVariable UUID cinemaId,
+            @RequestParam String date
+    ) {
+        return ResponseEntity.ok(
+                cinemaService.getShowtimes(
+                        cinemaId,
+                        LocalDate.parse(date)
+                )
+        );
     }
 }

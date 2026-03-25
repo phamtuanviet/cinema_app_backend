@@ -13,6 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.support.SessionStatus;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -57,6 +59,38 @@ public class PaymentService {
         }
     }
 
+    private void awardLoyaltyPoints(Booking booking) {
+        if (booking.getUser() == null || booking.getTotalAmount() == null) return;
+
+        LoyaltyAccount account = loyaltyAccountRepository.findByUser_Id(booking.getUser().getId())
+                .orElseGet(() -> {
+                    LoyaltyAccount newAccount = new LoyaltyAccount();
+                    newAccount.setUser(booking.getUser());
+                    newAccount.setAvailablePoints(0);
+                    return loyaltyAccountRepository.save(newAccount);
+                });
+
+        // Tính điểm: totalAmount / 50
+        int earnedPoints = booking.getTotalAmount()
+                .divide(BigDecimal.valueOf(50), RoundingMode.DOWN)
+                .intValue();
+
+        if (earnedPoints <= 0) return; // không cộng nếu < 1 điểm
+
+        // Cộng điểm vào account
+        account.setAvailablePoints(account.getAvailablePoints() + earnedPoints);
+        loyaltyAccountRepository.save(account);
+
+        // Tạo giao dịch điểm
+        LoyaltyTransaction transaction = new LoyaltyTransaction();
+        transaction.setAccount(account);
+        transaction.setBooking(booking);
+        transaction.setPoints(earnedPoints);
+        transaction.setType(LoyaltyTransactionType.EARN);
+        transaction.setDescription("Earned points from booking " + booking.getTicketCode());
+        loyaltyTransactionRepository.save(transaction);
+    }
+
     private void handleSuccess(
             Booking booking,
             String txnRef,
@@ -79,6 +113,7 @@ public class PaymentService {
         payment.setPaymentTime(LocalDateTime.now());
 
         paymentRepository.save(payment);
+        awardLoyaltyPoints(booking);
         if (booking.getSession() != null) {
             booking.getSession().setExpiresAt(Instant.now());
         }

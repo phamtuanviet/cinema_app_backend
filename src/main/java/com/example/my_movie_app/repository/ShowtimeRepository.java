@@ -91,4 +91,29 @@ public interface ShowtimeRepository extends JpaRepository<Showtime, UUID> {
     WHERE s.id = :id
 """)
     Optional<Showtime> findFullById(@Param("id") UUID id);
+
+    @Query("""
+    SELECT DISTINCT CAST(s.startTime AS date)
+    FROM Showtime s
+    JOIN s.room r
+    JOIN r.cinema c
+    WHERE c.id = :cinemaId
+      AND s.status = 'ACTIVE'
+      AND s.startTime > CURRENT_TIMESTAMP
+    ORDER BY CAST(s.startTime AS date)
+""")
+    List<java.sql.Date> findDistinctShowDates(UUID cinemaId);
+
+    @Query("""
+        SELECT s FROM Showtime s
+        JOIN FETCH s.movie m
+        JOIN FETCH s.room r
+        JOIN FETCH r.cinema c
+        LEFT JOIN FETCH m.genres g
+        WHERE c.id = :cinemaId
+        AND DATE(s.startTime) = :date
+        AND s.status = 'ACTIVE'
+        ORDER BY m.id, s.startTime
+    """)
+    List<Showtime> findByCinemaAndDate(UUID cinemaId, LocalDate date);
 }

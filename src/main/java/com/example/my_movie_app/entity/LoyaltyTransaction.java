@@ -26,6 +26,4 @@ public class LoyaltyTransaction extends BaseEntity {
 
     @ManyToOne
     private Booking booking;
-
-
 }

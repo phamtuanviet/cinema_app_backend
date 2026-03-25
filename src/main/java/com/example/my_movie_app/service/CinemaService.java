@@ -1,20 +1,33 @@
 package com.example.my_movie_app.service;
 
 import com.example.my_movie_app.dto.CinemaDto;
+import com.example.my_movie_app.dto.MovieShowtimeDto;
 import com.example.my_movie_app.dto.RegionDto;
+import com.example.my_movie_app.dto.ShowtimeDto;
+import com.example.my_movie_app.dto.response.CinemaShowtimeResponse;
 import com.example.my_movie_app.entity.Cinema;
+import com.example.my_movie_app.entity.Genre;
+import com.example.my_movie_app.entity.Movie;
+import com.example.my_movie_app.entity.Showtime;
 import com.example.my_movie_app.repository.CinemaRepository;
+import com.example.my_movie_app.repository.ShowtimeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class CinemaService {
 
     private final CinemaRepository cinemaRepository;
+    private final ShowtimeRepository showtimeRepository;
 
     public List<Cinema> getAllCinemas() {
         return cinemaRepository.findAll();
@@ -103,5 +116,84 @@ public class CinemaService {
                         p.getLogoUrl()
                 ))
                 .toList();
+    }
+
+
+
+    public List<LocalDate> getShowDates(UUID cinemaId) {
+        List<java.sql.Date> sqlDates = showtimeRepository.findDistinctShowDates(cinemaId);
+        return sqlDates.stream()
+                .map(java.sql.Date::toLocalDate)
+                .toList();
+    }
+
+    public CinemaShowtimeResponse getShowtimes(UUID cinemaId, LocalDate date) {
+
+        List<Showtime> showtimes =
+                showtimeRepository.findByCinemaAndDate(cinemaId, date);
+
+        if (showtimes.isEmpty()) {
+            return new CinemaShowtimeResponse(
+                    null,
+                    date,
+                    new ArrayList<>()
+            );
+        }
+
+        Cinema cinema = showtimes.get(0).getRoom().getCinema();
+
+        Map<Movie, List<Showtime>> grouped =
+                showtimes.stream().collect(Collectors.groupingBy(Showtime::getMovie));
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("HH:mm");
+
+        List<MovieShowtimeDto> movieDtos = new ArrayList<>();
+
+        for (Map.Entry<Movie, List<Showtime>> entry : grouped.entrySet()) {
+
+            Movie movie = entry.getKey();
+            List<Showtime> sts = entry.getValue();
+
+            List<ShowtimeDto> showtimeDtos = sts.stream()
+                    .map(s -> ShowtimeDto.builder()
+                            .id(s.getId().toString()) // 👈 UUID → String
+                            .startTime(s.getStartTime().format(formatter))
+                            .build()
+                    )
+                    .toList();
+
+            List<String> genres = movie.getGenres()
+                    .stream()
+                    .map(Genre::getName)
+                    .distinct()
+                    .toList();
+
+            movieDtos.add(new MovieShowtimeDto(
+                    movie.getId(),
+                    movie.getTitle(),
+                    movie.getDurationMinutes(),
+                    movie.getAgeRating(),
+                    movie.getPosterUrl(),
+                    movie.getTrailerUrl(),
+                    genres,
+                    showtimeDtos
+            ));
+        }
+
+        CinemaDto cinemaDto = CinemaDto.builder()
+                .id(cinema.getId())
+                .name(cinema.getName())
+                .address(cinema.getAddress())
+                .latitude(cinema.getLatitude())
+                .longitude(cinema.getLongitude())
+                .logoUrl(cinema.getLogoUrl())
+                .distance(null)
+                .build();
+
+        return new CinemaShowtimeResponse(
+                cinemaDto,
+                date,
+                movieDtos
+        );
     }
 }

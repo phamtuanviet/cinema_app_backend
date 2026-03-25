@@ -26,27 +26,22 @@ public class VoucherService {
     @Transactional
     public VoucherDto addVoucher(UUID userId, String code) {
 
-        // 🔍 tìm voucher
         Voucher voucher = voucherRepository.findByCode(code)
                 .orElseThrow(() -> new RuntimeException("Voucher không tồn tại"));
 
-        // ❌ check active
         if (!voucher.getActive()) {
             throw new RuntimeException("Voucher đã bị vô hiệu hóa");
         }
 
-        // ❌ check expiry
         if (voucher.getExpiryDate().isBefore(LocalDateTime.now())) {
             throw new RuntimeException("Voucher đã hết hạn");
         }
 
-        // ❌ check usage limit
         if (voucher.getUsageLimit() != null &&
                 voucher.getUsedCount() >= voucher.getUsageLimit()) {
             throw new RuntimeException("Voucher đã hết lượt sử dụng");
         }
 
-        // ❌ check user đã có chưa
         boolean existed = userVoucherRepository
                 .existsByUserIdAndVoucherId(userId, voucher.getId());
 
@@ -54,11 +49,9 @@ public class VoucherService {
             throw new RuntimeException("Bạn đã sở hữu voucher này");
         }
 
-        // 👤 user
         User user = userRepository.findById(userId)
                 .orElseThrow();
 
-        // 💾 save
         UserVoucher userVoucher = UserVoucher.builder()
                 .user(user)
                 .voucher(voucher)
@@ -67,7 +60,6 @@ public class VoucherService {
 
         userVoucherRepository.save(userVoucher);
 
-        // 🎯 return DTO
         return VoucherMapper.toDto(voucher, userVoucher, 0.0);
     }
 }
