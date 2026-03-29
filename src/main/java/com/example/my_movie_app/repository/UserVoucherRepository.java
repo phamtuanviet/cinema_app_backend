@@ -22,4 +22,7 @@ public interface UserVoucherRepository extends JpaRepository<UserVoucher, UUID> 
             UUID userId,
             UUID voucherId
     );
+
+
+    List<UserVoucher> findByUserIdAndIsUsed(UUID userId, Boolean isUsed);
 }

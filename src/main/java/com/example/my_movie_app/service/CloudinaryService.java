@@ -34,21 +34,21 @@ public class CloudinaryService {
         }
     }
 
-    public String uploadBytes(byte[] data, String fileName) {
+    public String upload(byte[] fileBytes, String fileName) {
         try {
-
-            Map uploadResult = cloudinary.uploader().upload(
-                    data,
+            Map<String, Object> uploadResult = cloudinary.uploader().upload(
+                    fileBytes,
                     ObjectUtils.asMap(
-                            "public_id", "cinema/qrcode/" + fileName,
-                            "overwrite", true
+                            "public_id", fileName,
+                            "folder", "qr-codes",
+                            "resource_type", "image"
                     )
             );
 
             return uploadResult.get("secure_url").toString();
 
         } catch (Exception e) {
-            throw new RuntimeException("Upload QR failed");
+            throw new RuntimeException("Upload failed", e);
         }
     }
 

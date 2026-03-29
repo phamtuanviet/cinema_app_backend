@@ -44,9 +44,13 @@ public class Booking extends BaseEntity{
 
     private LocalDateTime cancelledAt;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "session_id")
     private SeatHoldSession session;
 
     @OneToMany(mappedBy = "booking")
     private List<Payment> payments;
+
+    @OneToMany(mappedBy = "booking")
+    private List<BookingCombo> bookingCombos;
 }

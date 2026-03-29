@@ -92,6 +92,19 @@ public class SeatService {
                         (a, b) -> a
                 ));
 
+        SeatHoldSession session = seatHoldSessionRepository
+                .findValidSession(currentUserId, showtimeId)
+                .filter(s -> s.getExpiresAt().isAfter(Instant.now())) // chỉ lấy session còn hạn
+                .orElse(null);
+
+        String seatHoldSessionId = null;
+        String expiresAt = null;
+
+        if (session != null) {
+            seatHoldSessionId = session.getId().toString();
+            expiresAt = session.getExpiresAt().toString();
+        }
+
         List<SeatRowDto> rows = seats.stream()
                 .collect(Collectors.groupingBy(Seat::getSeatRow))
                 .entrySet()
@@ -128,7 +141,12 @@ public class SeatService {
                 .sorted(Comparator.comparing(SeatRowDto::getRow))
                 .toList();
 
-        return new SeatMapDto(showtimeId.toString(), rows);
+        return new SeatMapDto(
+                showtimeId.toString(),
+                rows,
+                expiresAt,
+                seatHoldSessionId
+        );
     }
 
     @Transactional
@@ -404,6 +422,4 @@ public class SeatService {
                 sum
         );
     }
-
-
 }

@@ -25,4 +25,17 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     List<Booking> findBySessionIdIn(@Param("sessionIds") Set<UUID> sessionIds);
 
     Booking findByTicketCode(String ticketCode);
+
+
+    @Query("""
+    SELECT DISTINCT b FROM Booking b
+    LEFT JOIN FETCH b.showtime s
+    LEFT JOIN FETCH s.movie
+    LEFT JOIN FETCH s.room r
+    LEFT JOIN FETCH r.cinema
+    LEFT JOIN FETCH b.bookingCombos bc
+    LEFT JOIN FETCH bc.combo
+    WHERE b.user.id = :userId
+""")
+    List<Booking> findAllByUserId(UUID userId);
 }

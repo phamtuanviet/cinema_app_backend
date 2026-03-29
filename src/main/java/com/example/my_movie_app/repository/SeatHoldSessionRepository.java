@@ -44,6 +44,8 @@ public interface SeatHoldSessionRepository extends JpaRepository<SeatHoldSession
 
     Optional<SeatHoldSession> findByIdAndUser_Id(UUID sessionId, UUID userId);
 
+    Optional<SeatHoldSession> findByShowtimeIdAndUserId(UUID showtimeId, UUID userId);
+
 
 
     @Modifying
@@ -54,5 +56,13 @@ public interface SeatHoldSessionRepository extends JpaRepository<SeatHoldSession
       AND expires_at > NOW()
 """, nativeQuery = true)
     int extendSession(UUID id, int minutes);
+
+    @Query("""
+    SELECT s FROM SeatHoldSession s
+    WHERE s.user.id = :userId
+      AND s.showtime.id = :showtimeId
+      AND s.expiresAt > CURRENT_TIMESTAMP
+""")
+    Optional<SeatHoldSession> findValidSession(UUID userId, UUID showtimeId);
 }
 

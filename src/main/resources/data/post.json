@@ -1,0 +1,37 @@
+[
+  {
+    "title": "Cập nhật phim mới đang chiếu",
+    "content": "Danh sách các bộ phim mới nhất đã được cập nhật, mang đến nhiều lựa chọn hấp dẫn cho người xem. Đây là thời điểm lý tưởng để bạn khám phá những nội dung giải trí mới.",
+    "thumbnailUrl": "https://res.cloudinary.com/dinrpkau6/image/upload/v1774456901/images_omxfv2.png",
+    "published": true,
+    "type": "NORMAL"
+  },
+  {
+    "title": "Xu hướng xem phim hiện nay",
+    "content": "Người dùng ngày càng ưu tiên trải nghiệm tiện lợi và cá nhân hóa. Các nền tảng đặt vé và xem phim đang không ngừng cải tiến để đáp ứng nhu cầu này.",
+    "thumbnailUrl": "https://res.cloudinary.com/dinrpkau6/image/upload/v1774456901/images_omxfv2.png",
+    "published": true,
+    "type": "NORMAL"
+  },
+  {
+    "title": "Những bộ phim đáng chú ý trong tháng",
+    "content": "Tháng này mang đến nhiều tác phẩm nổi bật với đa dạng thể loại. Từ hành động đến tình cảm, người xem có thể dễ dàng lựa chọn theo sở thích.",
+    "thumbnailUrl": "https://res.cloudinary.com/dinrpkau6/image/upload/v1774456901/images_omxfv2.png",
+    "published": true,
+    "type": "NORMAL"
+  },
+  {
+    "title": "Trải nghiệm xem phim tiện lợi hơn",
+    "content": "Việc đặt vé và theo dõi lịch chiếu ngày càng trở nên dễ dàng hơn với các ứng dụng hiện đại. Điều này giúp người dùng tiết kiệm thời gian và nâng cao trải nghiệm.",
+    "thumbnailUrl": "https://res.cloudinary.com/dinrpkau6/image/upload/v1774456901/images_omxfv2.png",
+    "published": true,
+    "type": "NORMAL"
+  },
+  {
+    "title": "Gợi ý nội dung giải trí cuối tuần",
+    "content": "Cuối tuần là thời điểm lý tưởng để thư giãn với những bộ phim hấp dẫn. Hãy dành thời gian tận hưởng những phút giây giải trí chất lượng.",
+    "thumbnailUrl": "https://res.cloudinary.com/dinrpkau6/image/upload/v1774456901/images_omxfv2.png",
+    "published": true,
+    "type": "NORMAL"
+  }
+]

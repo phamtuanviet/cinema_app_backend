@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Table(name = "vouchers")
@@ -36,5 +37,8 @@ public class Voucher extends BaseEntity {
 
     private Integer usageLimit;
 
-    private Integer usedCount;
+    @Column(nullable = false)
+    private Integer usedCount = 0;
+
+
 }

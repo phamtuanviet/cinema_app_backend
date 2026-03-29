@@ -13,4 +13,6 @@ import java.util.List;
 public class SeatMapDto {
     private String showtimeId;
     private List<SeatRowDto> rows;
+    private String expiresAt;
+    private String seatHoldSessionId;
 }

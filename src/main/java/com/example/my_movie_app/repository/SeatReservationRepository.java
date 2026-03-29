@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.UUID;
 
 
@@ -59,5 +60,13 @@ public interface SeatReservationRepository extends JpaRepository<SeatReservation
     );
 
     List<SeatReservation> findBySession_IdAndIsCancelFalse(UUID sessionId);
+
+    @Query("""
+    SELECT sr FROM SeatReservation sr
+    JOIN FETCH sr.seat
+    WHERE sr.session.id IN :sessionIds
+    AND sr.isCancel = false
+""")
+    List<SeatReservation> findAllBySessionIds(Set<UUID> sessionIds);
 
 }

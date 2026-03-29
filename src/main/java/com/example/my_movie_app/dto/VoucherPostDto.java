@@ -1,7 +1,6 @@
 package com.example.my_movie_app.dto;
 
 import com.example.my_movie_app.enums.DiscountType;
-import com.example.my_movie_app.enums.VoucherDiscountType;
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -12,14 +11,22 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class VoucherDto {
-    private String id;
+public class VoucherPostDto {
+
     private String code;
-    private String title;
     private DiscountType discountType;
     private BigDecimal discountValue;
+
+    private BigDecimal minOrderValue;
     private BigDecimal maxDiscount;
-    private BigDecimal minOrderAmount;
+
     private LocalDateTime expiryDate;
-    private Boolean isUsable;
+
+    private Boolean active;
+
+    private Integer usageLimit;
+    private Integer usedCount;
+
+    // tiện cho UI
+    private Integer remainingUsage;
 }

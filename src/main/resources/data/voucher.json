@@ -1,0 +1,57 @@
+[
+  {
+    "code": "WELCOME10",
+    "discountType": "PERCENT",
+    "discountValue": 10,
+    "minOrderValue": 100000,
+    "maxDiscount": 30000,
+    "expiryDate": "2026-06-30T23:59:59",
+    "active": true,
+    "usageLimit": 500,
+    "usedCount": 0
+  },
+  {
+    "code": "MOVIE20",
+    "discountType": "PERCENT",
+    "discountValue": 20,
+    "minOrderValue": 150000,
+    "maxDiscount": 50000,
+    "expiryDate": "2026-05-31T23:59:59",
+    "active": true,
+    "usageLimit": 300,
+    "usedCount": 0
+  },
+  {
+    "code": "COMBO30K",
+    "discountType": "FIXED",
+    "discountValue": 30000,
+    "minOrderValue": 120000,
+    "maxDiscount": 30000,
+    "expiryDate": "2026-04-30T23:59:59",
+    "active": true,
+    "usageLimit": 200,
+    "usedCount": 0
+  },
+  {
+    "code": "WEEKEND15",
+    "discountType": "PERCENT",
+    "discountValue": 15,
+    "minOrderValue": 200000,
+    "maxDiscount": 40000,
+    "expiryDate": "2026-04-15T23:59:59",
+    "active": true,
+    "usageLimit": 150,
+    "usedCount": 0
+  },
+  {
+    "code": "STUDENT25K",
+    "discountType": "FIXED",
+    "discountValue": 25000,
+    "minOrderValue": 80000,
+    "maxDiscount": 25000,
+    "expiryDate": "2026-05-10T23:59:59",
+    "active": true,
+    "usageLimit": 400,
+    "usedCount": 0
+  }
+]
