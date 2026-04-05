@@ -9,7 +9,4 @@ import java.util.UUID;
 public interface BannerRepository extends JpaRepository<Banner, UUID> {
 
     List<Banner> findByIsActiveTrueOrderByPriorityDesc();
-
-
-
 }

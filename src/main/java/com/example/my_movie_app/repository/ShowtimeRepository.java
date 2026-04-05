@@ -116,4 +116,27 @@ public interface ShowtimeRepository extends JpaRepository<Showtime, UUID> {
         ORDER BY m.id, s.startTime
     """)
     List<Showtime> findByCinemaAndDate(UUID cinemaId, LocalDate date);
+
+    @Query("SELECT s FROM Showtime s " +
+            "JOIN s.movie m " +
+            "JOIN s.room r " +
+            "JOIN r.cinema c " +
+            "WHERE m.isActive = true " +
+            "AND (:movieTitle = '' OR LOWER(m.title) LIKE LOWER(CONCAT('%', :movieTitle, '%'))) " +
+            "AND (:loc = '' OR (" +
+            "   LOWER(c.region) LIKE LOWER(CONCAT('%', :loc, '%')) OR " +
+            "   LOWER(c.cineplex) LIKE LOWER(CONCAT('%', :loc, '%')) OR " +
+            "   LOWER(c.address) LIKE LOWER(CONCAT('%', :loc, '%')) OR " +
+            "   LOWER(c.description) LIKE LOWER(CONCAT('%', :loc, '%')) " +
+            ")) " +
+            "AND s.startTime >= :fromDate " +
+            // Đã bỏ đoạn CAST lằng nhằng đi, chỉ cần thế này thôi:
+            "AND s.startTime <= :toDate " +
+            "ORDER BY s.startTime ASC")
+    List<Showtime> findShowtimesForChatbot(
+            @Param("movieTitle") String movieTitle,
+            @Param("loc") String loc,
+            @Param("fromDate") LocalDateTime fromDate,
+            @Param("toDate") LocalDateTime toDate
+    );
 }

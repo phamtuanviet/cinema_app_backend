@@ -202,7 +202,7 @@ public class AuthService {
 
     public ResetPasswordResponse resetPassword(ResetPasswordRequest request) {
 
-        String email = jwtService.extractEmailFromResetToken(request.getResetPassword());
+        String email = jwtService.extractEmailFromResetToken(request.getResetToken());
 
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));

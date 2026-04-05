@@ -1,5 +1,6 @@
 package com.example.my_movie_app.repository;
 
+import com.example.my_movie_app.dto.response.CinemaNearbyResponse;
 import com.example.my_movie_app.entity.Cinema;
 import com.example.my_movie_app.projection.CinemaProjection;
 import com.example.my_movie_app.projection.RegionProjection;
@@ -90,5 +91,19 @@ LIMIT 15
             @Param("region") String region,
             @Param("lat") double lat,
             @Param("lng") double lng
+    );
+
+    @Query(value = "SELECT new com.example.my_movie_app.dto.response.CinemaNearbyResponse(" +
+            "c.id, c.name, c.address, c.cineplex, " +
+            "(6371 * acos(cos(radians(:lat)) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(:lng)) + sin(radians(:lat)) * sin(radians(c.latitude)))), " +
+            "c.logoUrl) " +
+            "FROM Cinema c " +
+            "WHERE c.isActive = true " +
+            "AND (6371 * acos(cos(radians(:lat)) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(:lng)) + sin(radians(:lat)) * sin(radians(c.latitude)))) <= :radius " +
+            "ORDER BY (6371 * acos(cos(radians(:lat)) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(:lng)) + sin(radians(:lat)) * sin(radians(c.latitude)))) ASC")
+    List<CinemaNearbyResponse> findCinemasNearby(
+            @Param("lat") Double lat,
+            @Param("lng") Double lng,
+            @Param("radius") Double radius
     );
 }

@@ -18,7 +18,7 @@ public class JwtService {
     private static final String SECRET =
             "my-super-secret-key-my-super-secret-key";
 
-    private static final long ACCESS_EXP = 1000 * 60 * 15; // 15 min
+    private static final long ACCESS_EXP = 1000 * 60 * 15 * 3; // 15 min
     private static final long REFRESH_EXP = 1000L * 60 * 60 * 24 * 30; // 30 days
     private static final long RESET_EXP = 1000 * 60 * 10; // 10 min
 
