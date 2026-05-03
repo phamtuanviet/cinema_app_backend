@@ -17,6 +17,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.Instant;
 import java.time.LocalDateTime;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -30,6 +31,8 @@ public class PaymentService {
     private final LoyaltyAccountRepository loyaltyAccountRepository;
     private final LoyaltyTransactionRepository loyaltyTransactionRepository;
     private final PaymentRepository paymentRepository;
+    private final UserDeviceRepository userDeviceRepository;
+    private final FcmService fcmService;
 
     @Transactional
     public void handleVnpayCallback(Map<String, String> params) {
@@ -37,6 +40,7 @@ public class PaymentService {
         String txnRef = params.get("vnp_TxnRef");
         String responseCode = params.get("vnp_ResponseCode");
         String transactionId = params.get("vnp_TransactionNo");
+        String vnpPayDate = params.get("vnp_PayDate");
 
         Booking booking = bookingRepository.findByTicketCode(txnRef);
 
@@ -53,7 +57,7 @@ public class PaymentService {
         }
 
         if ("00".equals(responseCode)) {
-            handleSuccess(booking, txnRef, transactionId, responseCode);
+            handleSuccess(booking, txnRef, transactionId, responseCode,vnpPayDate);
         } else {
             handleFail(booking, txnRef, transactionId, responseCode);
         }
@@ -95,12 +99,14 @@ public class PaymentService {
             Booking booking,
             String txnRef,
             String transactionId,
-            String responseCode
+            String responseCode,
+            String vnpPayDate
     ) {
 
         booking.setStatus(BookingStatus.PAID);
 
         Payment payment = new Payment();
+        payment.setVnpPayDate(vnpPayDate);
         payment.setBooking(booking);
         payment.setAmount(booking.getTotalAmount());
         payment.setPaymentMethod("VNPAY");
@@ -117,6 +123,10 @@ public class PaymentService {
         if (booking.getSession() != null) {
             booking.getSession().setExpiresAt(Instant.now());
         }
+        System.out.println("Đang thông báo ");
+        sendSuccessNotification(booking);
+        System.out.println("Đã thông báo ");
+
     }
 
     private void handleFail(
@@ -194,6 +204,28 @@ public class PaymentService {
         // =========================
         if (booking.getSession() != null) {
             booking.getSession().setExpiresAt(Instant.now());
+        }
+    }
+
+    private void sendSuccessNotification(Booking booking) {
+        UUID userId = booking.getUser().getId();
+        String bookingId = booking.getId().toString();
+
+        // Lấy TẤT CẢ các thiết bị đang đăng nhập của User này
+        List<UserDevice> devices = userDeviceRepository.findAllByUserIdAndActiveTrue(userId);
+
+        for (UserDevice device : devices) {
+            String token = device.getFcmToken();
+
+            String title = "🎟️ Đặt vé thành công!";
+            String body = "Tuyệt vời! Ghế của bạn đã được giữ. Chúc bạn xem phim vui vẻ.";
+
+            // QUAN TRỌNG: Gửi kèm 'data' chứa bookingId để Android biết đường mở app
+            Map<String, String> data = new HashMap<>();
+            data.put("action", "OPEN_BOOKING_DETAIL"); // Báo cho Android biết cần làm gì
+            data.put("bookingId", bookingId);          // Truyền ID vé
+
+            fcmService.sendPushNotification(token, title, body, data);
         }
     }
 }

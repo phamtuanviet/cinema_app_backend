@@ -125,7 +125,6 @@ public interface ShowtimeRepository extends JpaRepository<Showtime, UUID> {
             "AND (:movieTitle = '' OR LOWER(m.title) LIKE LOWER(CONCAT('%', :movieTitle, '%'))) " +
             "AND (:loc = '' OR (" +
             "   LOWER(c.region) LIKE LOWER(CONCAT('%', :loc, '%')) OR " +
-            "   LOWER(c.cineplex) LIKE LOWER(CONCAT('%', :loc, '%')) OR " +
             "   LOWER(c.address) LIKE LOWER(CONCAT('%', :loc, '%')) OR " +
             "   LOWER(c.description) LIKE LOWER(CONCAT('%', :loc, '%')) " +
             ")) " +

@@ -12,6 +12,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/booking")
@@ -33,5 +34,14 @@ public class BookingController {
         return ResponseEntity.ok(
                 bookingService.getMyBookings(user.getId(), type)
         );
+    }
+
+    @GetMapping("/{bookingId}")
+    public ResponseEntity<BookingMyBookingDto> getBookingDetail(
+            @PathVariable UUID bookingId,
+            @AuthenticationPrincipal UserPrincipal user // Giả sử bạn lấy user từ Token
+    ) {
+        BookingMyBookingDto detail = bookingService.getBookingById(bookingId, user.getId());
+        return ResponseEntity.ok(detail);
     }
 }

@@ -32,18 +32,18 @@ public class SeatHoldSessionService {
 
         UUID userId = session.getUser().getId();
 
-        // ✅ LOAD genres riêng (fix lỗi)
         session.getShowtime().getMovie().getGenres().size();
 
         List<Combo> combos = comboRepository.findByIsActiveTrue();
 
         List<UserVoucher> userVouchers =
-                userVoucherRepository.findByUserId(userId);
+                userVoucherRepository.findValidAndUnusedByUserId(userId);
 
         LoyaltyAccount loyaltyAccount =
                 loyaltyAccountRepository.findById(userId).orElse(null);
 
         double seatAmount = session.getSeatReservations().stream()
+                .filter(r -> !r.isCancel())
                 .mapToDouble(r -> {
                     Seat seat = r.getSeat();
                     Showtime showtime = session.getShowtime();
@@ -53,7 +53,6 @@ public class SeatHoldSessionService {
                             .doubleValue();
                 })
                 .sum();
-
         return SeatHoldSessionMapper.toDto(
                 session,
                 combos,

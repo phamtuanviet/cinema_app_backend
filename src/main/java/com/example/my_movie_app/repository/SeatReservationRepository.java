@@ -59,6 +59,8 @@ public interface SeatReservationRepository extends JpaRepository<SeatReservation
             @Param("showtimeId") UUID showtimeId
     );
 
+
+
     List<SeatReservation> findBySession_IdAndIsCancelFalse(UUID sessionId);
 
     @Query("""
@@ -68,5 +70,15 @@ public interface SeatReservationRepository extends JpaRepository<SeatReservation
     AND sr.isCancel = false
 """)
     List<SeatReservation> findAllBySessionIds(Set<UUID> sessionIds);
+
+    @Query("""
+    SELECT sr FROM SeatReservation sr
+    JOIN FETCH sr.seat
+    WHERE sr.session.id = :sessionId
+    AND sr.isCancel = false
+""")
+    List<SeatReservation> findAllBySessionId(@Param("sessionId") UUID sessionId);
+
+
 
 }

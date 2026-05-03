@@ -64,5 +64,7 @@ public interface SeatHoldSessionRepository extends JpaRepository<SeatHoldSession
       AND s.expiresAt > CURRENT_TIMESTAMP
 """)
     Optional<SeatHoldSession> findValidSession(UUID userId, UUID showtimeId);
+
+
 }
 

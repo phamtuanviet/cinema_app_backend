@@ -100,6 +100,8 @@ public class ChatbotShowtimeService {
         }
 
         return ShowtimeChatbotResponse.builder()
+                .showtimeId(showtime.getId())
+                .movieId(showtime.getMovie().getId())
                 .movieTitle(showtime.getMovie().getTitle())
                 .cinemaName(showtime.getRoom().getCinema().getName())
                 .cinemaAddress(showtime.getRoom().getCinema().getAddress())

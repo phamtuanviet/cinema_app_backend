@@ -95,15 +95,37 @@ LIMIT 15
 
     @Query(value = "SELECT new com.example.my_movie_app.dto.response.CinemaNearbyResponse(" +
             "c.id, c.name, c.address, c.cineplex, " +
-            "(6371 * acos(cos(radians(:lat)) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(:lng)) + sin(radians(:lat)) * sin(radians(c.latitude)))), " +
+            // Dùng cờ hasLocation để quyết định có tính khoảng cách hay trả về 0.0
+            "CASE WHEN :hasLocation = true " +
+            "THEN (6371 * acos(cos(radians(:lat)) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(:lng)) + sin(radians(:lat)) * sin(radians(c.latitude)))) " +
+            "ELSE 0.0 END, " +
             "c.logoUrl) " +
             "FROM Cinema c " +
             "WHERE c.isActive = true " +
-            "AND (6371 * acos(cos(radians(:lat)) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(:lng)) + sin(radians(:lat)) * sin(radians(c.latitude)))) <= :radius " +
-            "ORDER BY (6371 * acos(cos(radians(:lat)) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(:lng)) + sin(radians(:lat)) * sin(radians(c.latitude)))) ASC")
+
+            // Bỏ qua lọc khoảng cách nếu hasLocation = false
+            "AND (:hasLocation = false OR (6371 * acos(cos(radians(:lat)) * cos(radians(c.latitude)) * cos(radians(c.longitude) - radians(:lng)) + sin(radians(:lat)) * sin(radians(c.latitude)))) <= :radius) " +
+
+            "AND (COALESCE(:query, '') = '' OR (LOWER(c.name) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "OR LOWER(c.address) LIKE LOWER(CONCAT('%', :query, '%')) " +
+            "OR LOWER(c.cineplex) LIKE LOWER(CONCAT('%', :query, '%')))) " +
+
+            "AND (COALESCE(:movieTitle, '') = '' OR EXISTS (" +
+            "    SELECT 1 FROM Showtime s " +
+            "    JOIN s.movie m " +
+            "    WHERE s.room.cinema.id = c.id " +
+            "    AND s.startTime >= CURRENT_TIMESTAMP " +
+            "    AND (LOWER(m.title) LIKE LOWER(CONCAT('%', :movieTitle, '%')) " +
+            "         OR LOWER(m.description) LIKE LOWER(CONCAT('%', :movieTitle, '%'))) " +
+            ")) " +
+
+            "ORDER BY 5 ASC")
     List<CinemaNearbyResponse> findCinemasNearby(
             @Param("lat") Double lat,
             @Param("lng") Double lng,
-            @Param("radius") Double radius
+            @Param("radius") Double radius,
+            @Param("movieTitle") String movieTitle,
+            @Param("query") String query,
+            @Param("hasLocation") boolean hasLocation // Thêm cờ này
     );
 }

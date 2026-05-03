@@ -1,6 +1,7 @@
 package com.example.my_movie_app.repository;
 
 import com.example.my_movie_app.entity.Rating;
+import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
@@ -33,4 +34,11 @@ public interface RatingRepository extends JpaRepository<Rating, UUID> {
 
     @Query("SELECT AVG(r.score) FROM Rating r WHERE r.movie.id = :movieId")
     Double getAverageScore(UUID movieId);
+
+    @Query("""
+    SELECT AVG(r.score)
+    FROM Rating r
+    WHERE r.movie.id = :movieId
+""")
+    Double getAverageRatingByMovieId(@Param("movieId") UUID movieId);
 }

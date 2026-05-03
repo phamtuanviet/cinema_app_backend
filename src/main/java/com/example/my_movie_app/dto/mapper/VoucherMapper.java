@@ -12,8 +12,7 @@ public class VoucherMapper {
         boolean isUsable =
                 !userVoucher.getIsUsed()
                         && voucher.getActive()
-                        && voucher.getExpiryDate().isAfter(LocalDateTime.now())
-                        && seatAmount >= voucher.getMinOrderValue().doubleValue();
+                        && voucher.getExpiryDate().isAfter(LocalDateTime.now());
 
         return VoucherDto.builder()
                 .id(voucher.getId().toString())
@@ -27,4 +26,6 @@ public class VoucherMapper {
                 .isUsable(isUsable)
                 .build();
     }
+
+
 }

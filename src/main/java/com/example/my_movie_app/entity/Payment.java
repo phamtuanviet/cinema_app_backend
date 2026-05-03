@@ -40,4 +40,6 @@ public class Payment {
     private String gatewayResponseCode;
 
     private LocalDateTime paymentTime = LocalDateTime.now();
+
+    private String vnpPayDate;
 }

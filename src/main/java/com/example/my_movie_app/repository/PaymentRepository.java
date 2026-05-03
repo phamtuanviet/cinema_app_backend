@@ -26,4 +26,8 @@ public interface PaymentRepository extends JpaRepository<Payment, UUID> {
 
     // 🔥 tìm theo txnRef (vnp_TxnRef)
     Optional<Payment> findByGatewayOrderId(String gatewayOrderId);
+
+
+    // Lấy giao dịch thanh toán để lấy vnp_TransactionDate lúc refund
+    Optional<Payment> findByBookingIdAndStatus(UUID bookingId, PaymentStatus status);
 }

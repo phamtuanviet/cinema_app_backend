@@ -13,5 +13,7 @@ import java.util.UUID;
 public interface LoyaltyAccountRepository extends JpaRepository<LoyaltyAccount, UUID> {
 
     Optional<LoyaltyAccount> findByUser_Id(UUID userId);
+
+
 }
 

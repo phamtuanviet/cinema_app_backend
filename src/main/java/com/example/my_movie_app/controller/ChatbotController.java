@@ -85,12 +85,14 @@ public class ChatbotController {
         return ResponseEntity.ok(result);
     }
 
-    @GetMapping("/cinemas/nearby")
+    @GetMapping("/cinemas")
     public ResponseEntity<List<CinemaNearbyResponse>> getNearby(
-            @RequestParam Double lat,
-            @RequestParam Double lng,
+            @RequestParam(required = false) Double lat,
+            @RequestParam(required = false) Double lng,
+            @RequestParam(required = false) String movieTitle,
+            @RequestParam(required = false) String query, // Thêm cái này để tìm bằng text
             @RequestParam(required = false) Double radius) {
-        return ResponseEntity.ok(chatbotCinemaService.getNearbyCinemas(lat, lng, radius));
+        return ResponseEntity.ok(chatbotCinemaService.getNearbyCinemas(lat, lng, radius, movieTitle, query));
     }
 
     @GetMapping("/movies/detail")

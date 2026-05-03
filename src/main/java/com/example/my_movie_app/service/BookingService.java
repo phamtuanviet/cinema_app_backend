@@ -55,7 +55,6 @@ public class BookingService {
             throw new RuntimeException("Invalid session");
         }
 
-
         int updated = sessionRepo.extendSession(
                 session.getId(),
                 5 // phút
@@ -300,7 +299,8 @@ public class BookingService {
             Booking b,
             Map<UUID, Integer> userRatingMap,
             Map<UUID, Double> avgRatingMap,
-            Map<UUID, List<SeatReservation>> seatMap
+            Map<UUID, List<SeatReservation>> seatMap,
+            String type
     ) {
 
         BookingMyBookingDto dto = new BookingMyBookingDto();
@@ -308,7 +308,7 @@ public class BookingService {
         dto.setId(b.getId());
         dto.setTicketCode(b.getTicketCode());
         dto.setQrCodeUrl(b.getQrCodeUrl());
-        dto.setStatus(b.getStatus().name());
+        dto.setStatus(type);
 
         dto.setSeatAmount(b.getSeatAmount());
         dto.setComboAmount(b.getComboAmount());
@@ -429,7 +429,48 @@ public class BookingService {
 
         // ===== BUILD DTO =====
         return filtered.stream()
-                .map(b -> mapToDto(b, userRatingMap, avgRatingMap, seatMap))
+                .map(b -> mapToDto(b, userRatingMap, avgRatingMap, seatMap,type))
                 .toList();
+    }
+
+    public BookingMyBookingDto getBookingById(UUID bookingId, UUID userId) {
+        Booking b = bookingRepo.findByIdAndUserId(bookingId, userId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy vé"));
+
+        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime start = b.getShowtime().getStartTime();
+        LocalDateTime end = b.getShowtime().getEndTime();
+
+        // 2. Xác định type (Status hiển thị)
+        String type;
+        if (end.isBefore(now)) {
+            type = "COMPLETED";
+        } else if (start.isBefore(now) && end.isAfter(now)) {
+            type = "ONGOING";
+        } else {
+            type = "UPCOMING";
+        }
+
+        UUID movieId = b.getShowtime().getMovie().getId();
+
+        // 3. Lấy thông tin Rating (Do chỉ có 1 phim nên query trực tiếp cho nhanh)
+        Integer userRating = ratingRepository.findByUserIdAndMovieId(userId, movieId)
+                .map(Rating::getScore).orElse(null);
+        Double avgRating = ratingRepository.getAverageRatingByMovieId(movieId);
+
+        // 4. Lấy danh sách ghế
+        List<SeatReservation> seats = b.getSession() != null
+                ? seatReservationRepo.findAllBySessionId(b.getSession().getId())
+                : List.of();
+
+        // Đưa vào Map để tái sử dụng hàm mapToDto cũ của bạn
+        Map<UUID, Integer> userRatingMap = userRating != null ? Map.of(movieId, userRating) : Map.of();
+        Map<UUID, Double> avgRatingMap = avgRating != null ? Map.of(movieId, avgRating) : Map.of();
+        Map<UUID, List<SeatReservation>> seatMap = b.getSession() != null
+                ? Map.of(b.getSession().getId(), seats)
+                : Map.of();
+
+        // 5. Build DTO
+        return mapToDto(b, userRatingMap, avgRatingMap, seatMap, type);
     }
 }

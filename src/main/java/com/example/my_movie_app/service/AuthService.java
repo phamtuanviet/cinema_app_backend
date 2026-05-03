@@ -3,15 +3,18 @@ package com.example.my_movie_app.service;
 import com.example.my_movie_app.dto.request.*;
 import com.example.my_movie_app.dto.response.*;
 import com.example.my_movie_app.entity.User;
+import com.example.my_movie_app.entity.UserDevice;
 import com.example.my_movie_app.entity.UserToken;
 
 import com.example.my_movie_app.enums.OtpType;
+import com.example.my_movie_app.repository.UserDeviceRepository;
 import com.example.my_movie_app.repository.UserRepository;
 import com.example.my_movie_app.repository.UserTokenRepository;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 
 import java.time.LocalDateTime;
@@ -27,6 +30,7 @@ public class AuthService {
     private final PasswordEncoder passwordEncoder;
     private final JwtService jwtService;
     private final OtpService otpService;
+    private final UserDeviceRepository userDeviceRepository;
 
     // ================= REGISTER =================
 
@@ -75,6 +79,7 @@ public class AuthService {
 
     // ================= LOGIN =================
 
+    @Transactional // Thêm Transactional để đảm bảo lưu cả Token và Device hoặc rollback tất cả nếu lỗi
     public LoginResponse login(
             LoginRequest request,
             String deviceInfo,
@@ -95,6 +100,7 @@ public class AuthService {
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
 
+        // 1. Lưu Session Token (như cũ)
         UserToken token = new UserToken();
         token.setUser(user);
         token.setRefreshToken(refreshToken);
@@ -102,8 +108,25 @@ public class AuthService {
         token.setDeviceInfo(deviceInfo);
         token.setIpAddress(ipAddress);
         token.setIsRevoked(false);
-
         tokenRepository.save(token);
+
+        // 2. XỬ LÝ FCM TOKEN (MỚI THÊM)
+        String fcmToken = request.getFcmToken();
+        if (fcmToken != null && !fcmToken.trim().isEmpty()) {
+
+            // Tìm xem token này đã tồn tại trong DB chưa (Upsert logic)
+            UserDevice userDevice = userDeviceRepository.findByFcmToken(fcmToken)
+                    .orElse(new UserDevice()); // Nếu chưa có thì tạo mới
+
+            // Cập nhật thông tin (Nếu máy này vừa đổi chủ, nó sẽ gán lại cho user mới)
+            userDevice.setUser(user);
+            userDevice.setFcmToken(fcmToken);
+            userDevice.setDeviceType("ANDROID"); // Tạm hardcode hoặc bạn có thể bóc tách từ chuỗi deviceInfo
+            userDevice.setActive(true);
+
+            // Hibernate sẽ tự động xử lý @CreationTimestamp và @UpdateTimestamp
+            userDeviceRepository.save(userDevice);
+        }
 
         return LoginResponse.builder()
                 .user(mapToUserDto(user))
@@ -111,7 +134,6 @@ public class AuthService {
                 .refreshToken(refreshToken)
                 .build();
     }
-
     // ================= REFRESH TOKEN =================
 
     public RefreshResponse refresh(RefreshRequest request,

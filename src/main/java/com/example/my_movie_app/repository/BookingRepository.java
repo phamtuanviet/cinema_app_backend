@@ -46,10 +46,28 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
             "JOIN FETCH s.movie m " +
             "JOIN FETCH s.room r " +
             "JOIN FETCH r.cinema c " +
-            "LEFT JOIN FETCH b.session sess " + // LEFT JOIN vì có thể booking cũ không còn session
+            "LEFT JOIN FETCH b.session sess " +
             "LEFT JOIN FETCH sess.seatReservations sr " +
             "LEFT JOIN FETCH sr.seat " +
             "WHERE b.user.id = :userId " +
             "ORDER BY b.createdAt DESC")
     List<Booking> findByUserId(@Param("userId") UUID userId, Pageable pageable);
+
+    @Query("""
+    SELECT DISTINCT b FROM Booking b
+    LEFT JOIN FETCH b.showtime s
+    LEFT JOIN FETCH s.movie
+    LEFT JOIN FETCH s.room r
+    LEFT JOIN FETCH r.cinema
+    LEFT JOIN FETCH b.bookingCombos bc
+    LEFT JOIN FETCH bc.combo
+    WHERE b.id = :id 
+    AND b.user.id = :userId
+""")
+    Optional<Booking> findByIdAndUserId(@Param("id") UUID id, @Param("userId") UUID userId);
+
+    @Query("SELECT b FROM Booking b JOIN FETCH b.session WHERE b.id = :id")
+    Optional<Booking> findByIdWithSession(@Param("id") UUID id);
+
+
 }
