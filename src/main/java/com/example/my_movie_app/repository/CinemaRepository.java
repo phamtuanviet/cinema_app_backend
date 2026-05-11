@@ -5,6 +5,8 @@ import com.example.my_movie_app.entity.Cinema;
 import com.example.my_movie_app.projection.CinemaProjection;
 import com.example.my_movie_app.projection.RegionProjection;
 import io.lettuce.core.dynamic.annotation.Param;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -128,4 +130,16 @@ LIMIT 15
             @Param("query") String query,
             @Param("hasLocation") boolean hasLocation // Thêm cờ này
     );
+
+    Page<Cinema> findByNameContainingIgnoreCase(String name, Pageable pageable);
+
+    // 🔥 Lấy danh sách Khu vực (Region) không trùng lặp và loại bỏ các dòng rỗng/null
+    @Query("SELECT DISTINCT c.region FROM Cinema c WHERE c.region IS NOT NULL AND trim(c.region) <> '' ORDER BY c.region")
+    List<String> findDistinctRegions();
+
+    // 🔥 Lấy danh sách Cụm rạp (Cineplex) không trùng lặp và loại bỏ các dòng rỗng/null
+    @Query("SELECT DISTINCT c.cineplex FROM Cinema c WHERE c.cineplex IS NOT NULL AND trim(c.cineplex) <> '' ORDER BY c.cineplex")
+    List<String> findDistinctCineplexes();
+
+    List<Cinema> findTop10ByNameContainingIgnoreCase(String name);
 }

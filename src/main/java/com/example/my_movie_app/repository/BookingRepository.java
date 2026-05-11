@@ -2,6 +2,7 @@ package com.example.my_movie_app.repository;
 
 import com.example.my_movie_app.entity.Booking;
 import com.example.my_movie_app.entity.SeatHoldSession;
+import com.example.my_movie_app.projection.RevenueProjection;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -69,5 +70,14 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     @Query("SELECT b FROM Booking b JOIN FETCH b.session WHERE b.id = :id")
     Optional<Booking> findByIdWithSession(@Param("id") UUID id);
 
+    @Query(value = """
+        SELECT to_char(b.created_at, 'DD/MM') as date, SUM(b.total_amount) as amount 
+        FROM bookings b 
+        WHERE b.created_at >= CURRENT_DATE - INTERVAL '7 days' 
+          AND b.status = 'PAID' 
+        GROUP BY to_char(b.created_at, 'DD/MM'), DATE(b.created_at) 
+        ORDER BY DATE(b.created_at) ASC
+    """, nativeQuery = true)
+    List<RevenueProjection> getRevenueLast7Days();
 
 }

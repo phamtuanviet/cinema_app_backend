@@ -38,6 +38,7 @@ public class SecurityConfig {
                                 "/api/chatbot/**"
 
                         ).permitAll()
+                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
                         .anyRequest()
                         .authenticated()
                 )

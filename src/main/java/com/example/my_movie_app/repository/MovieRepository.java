@@ -94,4 +94,12 @@ public interface MovieRepository extends JpaRepository<Movie, UUID> {
             @Param("language") String language
     );
 
+    @EntityGraph(attributePaths = {"genres"})
+    Page<Movie> findAll(Pageable pageable);
+
+    @EntityGraph(attributePaths = {"genres"})
+    Page<Movie> findByTitleContainingIgnoreCase(String title, Pageable pageable);
+
+    List<Movie> findTop10ByTitleContainingIgnoreCase(String title);
+
 }

@@ -4,6 +4,8 @@ import com.example.my_movie_app.entity.Movie;
 import com.example.my_movie_app.entity.Room;
 import com.example.my_movie_app.entity.Showtime;
 import io.lettuce.core.dynamic.annotation.Param;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -137,5 +139,45 @@ public interface ShowtimeRepository extends JpaRepository<Showtime, UUID> {
             @Param("loc") String loc,
             @Param("fromDate") LocalDateTime fromDate,
             @Param("toDate") LocalDateTime toDate
+    );
+
+
+    @Query("SELECT s FROM Showtime s WHERE " +
+            "(:search IS NULL OR LOWER(s.movie.title) LIKE :search " +
+            "OR LOWER(s.room.cinema.name) LIKE :search) " +
+            "AND s.startTime > :now")
+    Page<Showtime> findUpcoming(@Param("search") String search, @Param("now") LocalDateTime now, Pageable pageable);
+
+    // 2. Tab ĐANG CHIẾU (ONGOING)
+    @Query("SELECT s FROM Showtime s WHERE " +
+            "(:search IS NULL OR LOWER(s.movie.title) LIKE :search " +
+            "OR LOWER(s.room.cinema.name) LIKE :search) " +
+            "AND s.startTime <= :now AND s.endTime >= :now")
+    Page<Showtime> findOngoing(@Param("search") String search, @Param("now") LocalDateTime now, Pageable pageable);
+
+    // 3. Tab ĐÃ CHIẾU (PAST)
+    @Query("SELECT s FROM Showtime s WHERE " +
+            "(:search IS NULL OR LOWER(s.movie.title) LIKE :search " +
+            "OR LOWER(s.room.cinema.name) LIKE :search) " +
+            "AND s.endTime < :now")
+    Page<Showtime> findPast(@Param("search") String search, @Param("now") LocalDateTime now, Pageable pageable);
+
+    @Query("SELECT COUNT(s) > 0 FROM Showtime s WHERE s.room.id = :roomId " +
+            "AND s.startTime < :endTime AND s.endTime > :startTime")
+    boolean existsByRoomIdAndConflictTime(
+            @Param("roomId") UUID roomId,
+            @Param("startTime") LocalDateTime startTime,
+            @Param("endTime") LocalDateTime endTime
+    );
+
+    @Query("SELECT COUNT(s) > 0 FROM Showtime s WHERE s.room.id = :roomId " +
+            "AND s.id != :showtimeId " + // KHÔNG check với chính lịch chiếu này
+            "AND s.status != 'CANCELED' " + // KHÔNG tính các lịch đã hủy
+            "AND s.startTime < :endTime AND s.endTime > :startTime")
+    boolean existsConflictForUpdate(
+            @Param("roomId") UUID roomId,
+            @Param("showtimeId") UUID showtimeId,
+            @Param("startTime") LocalDateTime startTime,
+            @Param("endTime") LocalDateTime endTime
     );
 }
