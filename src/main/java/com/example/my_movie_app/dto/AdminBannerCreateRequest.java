@@ -1,19 +1,13 @@
 package com.example.my_movie_app.dto;
 
-import lombok.*;
-
+import lombok.Data;
 import java.util.UUID;
 
-@Getter
-@Setter
-@NoArgsConstructor
-@AllArgsConstructor
-@Builder
-public class BannerDto{
-    private UUID id;
-    private String imageUrl;
+@Data
+public class AdminBannerCreateRequest {
     private String actionType;
     private String targetUrl;
     private UUID movieId;
     private Integer priority;
+    private Boolean isActive;
 }

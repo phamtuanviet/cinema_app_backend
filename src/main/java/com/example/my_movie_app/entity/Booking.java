@@ -25,7 +25,7 @@ public class Booking extends BaseEntity{
     private Showtime showtime;
 
     @Column(unique = true, nullable = false)
-    private String ticketCode;
+        private String ticketCode;
 
     private String qrCodeUrl;
 

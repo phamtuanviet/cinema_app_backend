@@ -37,4 +37,13 @@ public interface PostRepository extends JpaRepository<Post, UUID> {
             @Param("type") PostType type,
             Pageable pageable
     );
+
+    @Query("SELECT p FROM Post p LEFT JOIN p.voucher v WHERE " +
+            "p.type = :type AND " +
+            "(:search = '' OR UPPER(p.title) LIKE :search OR UPPER(v.code) LIKE :search)")
+    Page<Post> searchPostsByType(
+            @Param("search") String search,
+            @Param("type") PostType type,
+            Pageable pageable
+    );
 }

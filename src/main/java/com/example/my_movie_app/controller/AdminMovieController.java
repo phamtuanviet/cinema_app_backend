@@ -1,15 +1,13 @@
 package com.example.my_movie_app.controller;
 
-import com.example.my_movie_app.dto.AdminMovieCreateRequest;
-import com.example.my_movie_app.dto.AdminMovieDto;
-import com.example.my_movie_app.dto.AdminMovieUpdateRequest;
-import com.example.my_movie_app.dto.AdminPaginatedResponse;
+import com.example.my_movie_app.dto.*;
 import com.example.my_movie_app.service.AdminMovieService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.List;
 import java.util.UUID;
 
 @RestController
@@ -48,5 +46,10 @@ public class AdminMovieController {
     @GetMapping("/{id}")
     public AdminMovieDto getMovieById(@PathVariable UUID id) {
         return adminMovieService.getMovieById(id);
+    }
+
+    @GetMapping("/active-list")
+    public List<AdminMovieSimpleDto> getActiveMoviesForDropdown() {
+        return adminMovieService.getActiveMoviesSimpleList();
     }
 }

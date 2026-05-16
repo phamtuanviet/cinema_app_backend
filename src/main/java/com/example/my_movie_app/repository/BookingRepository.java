@@ -2,8 +2,10 @@ package com.example.my_movie_app.repository;
 
 import com.example.my_movie_app.entity.Booking;
 import com.example.my_movie_app.entity.SeatHoldSession;
+import com.example.my_movie_app.enums.BookingStatus;
 import com.example.my_movie_app.projection.RevenueProjection;
 import io.lettuce.core.dynamic.annotation.Param;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -80,4 +82,13 @@ public interface BookingRepository extends JpaRepository<Booking, UUID> {
     """, nativeQuery = true)
     List<RevenueProjection> getRevenueLast7Days();
 
+    @Query("SELECT b FROM Booking b WHERE b.status = :status AND " +
+            "(:search IS NULL OR " +
+            "LOWER(b.user.email) LIKE :search OR " +
+            "LOWER(b.ticketCode) LIKE :search)")
+    Page<Booking> searchBookingsByStatus(
+            @Param("search") String search,
+            @Param("status") BookingStatus status,
+            Pageable pageable
+    );
 }

@@ -13,8 +13,8 @@ import java.util.UUID;
 public interface LoyaltyTransactionRepository extends JpaRepository<LoyaltyTransaction, UUID> {
     List<LoyaltyTransaction> findByBooking(Booking booking);
 
-    List<LoyaltyTransaction> findByAccountUserIdOrderByCreatedAtDesc(UUID userId);
 
     List<LoyaltyTransaction> findByAccountUserId(UUID userId);
-}
+
+    List<LoyaltyTransaction> findByAccountUserIdOrderByCreatedAtDesc(UUID userId);}
 

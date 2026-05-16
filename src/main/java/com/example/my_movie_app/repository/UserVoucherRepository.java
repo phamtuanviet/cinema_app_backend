@@ -40,4 +40,6 @@ public interface UserVoucherRepository extends JpaRepository<UserVoucher, UUID> 
     List<UserVoucher> findValidAndUnusedByUserId(@Param("userId") UUID userId);
 
 
+
+
 }

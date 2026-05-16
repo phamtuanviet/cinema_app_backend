@@ -1,22 +1,22 @@
-package com.example.my_movie_app.dto.response;
+package com.example.my_movie_app.dto;
 
-import lombok.*;
-
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import java.util.UUID;
 
-@Getter
-@Setter
+@Data
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Builder
-
-public class UserResponse {
+public class AdminUserDto {
     private UUID id;
     private String email;
     private String fullName;
     private String phone;
-    private String role;
     private Boolean isVerified;
+    private String role;
     private String avatarUrl;
     private Boolean isBanned;
 }

@@ -3,6 +3,7 @@ package com.example.my_movie_app.service;
 import com.example.my_movie_app.dto.request.BannerRequest;
 import com.example.my_movie_app.dto.request.MovieRequest;
 import com.example.my_movie_app.entity.*;
+import com.example.my_movie_app.enums.BannerActionType;
 import com.example.my_movie_app.repository.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -126,10 +127,33 @@ public class DataSeederService {
 
             for (BannerRequest req : requests) {
 
+                // 1. Chuyển đổi an toàn từ String sang Enum BannerActionType
+                BannerActionType type = null;
+                if (req.getActionType() != null) {
+                    try {
+                        type = BannerActionType.valueOf(req.getActionType().toUpperCase());
+                    } catch (IllegalArgumentException e) {
+                        // Mặc định nếu trong JSON ghi sai chính tả
+                        type = BannerActionType.URL;
+                    }
+                }
+
+                // 2. Logic làm sạch dữ liệu: Chỉ lấy dữ liệu đúng với Loại Action
+                String finalTargetUrl = req.getTargetUrl();
+                UUID finalMovieId = req.getMovieId();
+
+                if (type == BannerActionType.URL) {
+                    finalMovieId = null; // Xóa movieId nếu là URL
+                } else if (type == BannerActionType.MOVIE) {
+                    finalTargetUrl = null; // Xóa targetUrl nếu là MOVIE
+                }
+
+                // 3. Build Entity
                 Banner banner = Banner.builder()
                         .imageUrl(req.getImageUrl())
-                        .actionType(req.getActionType())
-                        .actionValue(req.getActionValue())
+                        .actionType(type)
+                        .targetUrl(finalTargetUrl)
+                        .movieId(finalMovieId)
                         .isActive(req.getIsActive() != null ? req.getIsActive() : true)
                         .priority(req.getPriority() != null ? req.getPriority() : 0)
                         .build();
@@ -141,7 +165,8 @@ public class DataSeederService {
             bannerRepository.saveAll(banners);
 
         } catch (Exception e) {
-            throw new RuntimeException("Import banner failed: " + e.getMessage());
+            // Ném thêm e vào RuntimeException để xem được StackTrace (Lỗi gốc) trên Console
+            throw new RuntimeException("Import banner failed: " + e.getMessage(), e);
         }
     }
 

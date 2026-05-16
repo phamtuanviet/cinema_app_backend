@@ -1,7 +1,5 @@
 package com.example.my_movie_app.service;
 
-
-
 import com.example.my_movie_app.dto.AdminPaginatedResponse;
 import com.example.my_movie_app.dto.AdminShowtimeDto;
 import com.example.my_movie_app.dto.AdminShowtimeUpdateRequest;

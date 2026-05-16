@@ -213,4 +213,12 @@ public class AdminMovieService {
 
         return mapToDto(movie); // Sử dụng hàm mapping đã có
     }
+
+    public List<AdminMovieSimpleDto> getActiveMoviesSimpleList() {
+        // Chỉ lấy phim đang active
+        return movieRepository.findAll().stream()
+                .filter(Movie::getIsActive)
+                .map(m -> new AdminMovieSimpleDto(m.getId(), m.getTitle()))
+                .collect(Collectors.toList());
+    }
 }

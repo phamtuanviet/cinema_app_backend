@@ -79,7 +79,7 @@ public class AuthService {
 
     // ================= LOGIN =================
 
-    @Transactional // Thêm Transactional để đảm bảo lưu cả Token và Device hoặc rollback tất cả nếu lỗi
+    @Transactional
     public LoginResponse login(
             LoginRequest request,
             String deviceInfo,
@@ -87,20 +87,27 @@ public class AuthService {
     ) {
 
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Tài khoản không tồn tại"));
 
-        if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
-            throw new RuntimeException("Invalid credentials");
+        // 🔥 1. KIỂM TRA BANNED (THÊM VÀO ĐÂY)
+        if (user.getIsBanned() != null && user.getIsBanned()) {
+            throw new RuntimeException("Tài khoản của bạn đã bị khóa. Vui lòng liên hệ bộ phận hỗ trợ.");
         }
 
-        if (!user.getIsVerified()) {
-            throw new RuntimeException("Email not verified");
+        // 2. Kiểm tra mật khẩu
+        if (!passwordEncoder.matches(request.getPassword(), user.getPasswordHash())) {
+            throw new RuntimeException("Mật khẩu không chính xác");
+        }
+
+        // 3. Kiểm tra xác thực email
+        if (user.getIsVerified() != null && !user.getIsVerified()) {
+            throw new RuntimeException("Email chưa được xác thực");
         }
 
         String accessToken = jwtService.generateAccessToken(user);
         String refreshToken = jwtService.generateRefreshToken(user);
 
-        // 1. Lưu Session Token (như cũ)
+        // 4. Lưu Session Token
         UserToken token = new UserToken();
         token.setUser(user);
         token.setRefreshToken(refreshToken);
@@ -110,21 +117,17 @@ public class AuthService {
         token.setIsRevoked(false);
         tokenRepository.save(token);
 
-        // 2. XỬ LÝ FCM TOKEN (MỚI THÊM)
+        // 5. XỬ LÝ FCM TOKEN
         String fcmToken = request.getFcmToken();
         if (fcmToken != null && !fcmToken.trim().isEmpty()) {
-
-            // Tìm xem token này đã tồn tại trong DB chưa (Upsert logic)
             UserDevice userDevice = userDeviceRepository.findByFcmToken(fcmToken)
-                    .orElse(new UserDevice()); // Nếu chưa có thì tạo mới
+                    .orElse(new UserDevice());
 
-            // Cập nhật thông tin (Nếu máy này vừa đổi chủ, nó sẽ gán lại cho user mới)
             userDevice.setUser(user);
             userDevice.setFcmToken(fcmToken);
-            userDevice.setDeviceType("ANDROID"); // Tạm hardcode hoặc bạn có thể bóc tách từ chuỗi deviceInfo
+            userDevice.setDeviceType("ANDROID");
             userDevice.setActive(true);
 
-            // Hibernate sẽ tự động xử lý @CreationTimestamp và @UpdateTimestamp
             userDeviceRepository.save(userDevice);
         }
 

@@ -28,4 +28,6 @@ public class User extends BaseEntity {
     private Role role = Role.USER;
 
     private String avatarUrl;
+
+    private Boolean isBanned = false;
 }
