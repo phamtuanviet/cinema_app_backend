@@ -14,9 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -26,6 +24,7 @@ public class AdminMovieService {
     private final MovieRepository movieRepository;
     private final GenreRepository genreRepository;
     private final CloudinaryService cloudinaryService;
+    private final FcmService fcmService;
 
     public AdminPaginatedResponse<AdminMovieDto> getMovies(String search, int page, int size) {
         // Sắp xếp phim mới thêm lên đầu (Giả sử BaseEntity có trường createdAt)
@@ -79,16 +78,13 @@ public class AdminMovieService {
             for (String newGenreName : request.getNewGenres()) {
                 String trimmedName = newGenreName.trim();
 
-                // Kiểm tra xem đã tồn tại trong DB chưa để tránh lỗi Unique Constraint
                 Genre existingGenre = genreRepository.findByNameIgnoreCase(trimmedName).orElse(null);
 
                 if (existingGenre != null) {
-                    // Nếu DB đã có chữ này, chỉ cần add vào phim (tránh add trùng lặp)
                     if (!movieGenres.contains(existingGenre)) {
                         movieGenres.add(existingGenre);
                     }
                 } else {
-                    // Nếu chưa có, tạo mới Genre và lưu xuống DB
                     Genre newGenre = new Genre();
                     newGenre.setName(trimmedName);
                     newGenre = genreRepository.save(newGenre);
@@ -112,10 +108,23 @@ public class AdminMovieService {
                 .genres(movieGenres)
                 .build();
 
-        // 4. Lưu Phim
+        // 4. Lưu Phim vào DB
         Movie savedMovie = movieRepository.save(movie);
 
-        // 5. Trả về DTO (Bạn tái sử dụng lại hàm mapToDto mình viết ở lần trước nhé)
+        // 🔥 5. XỬ LÝ GỬI THÔNG BÁO PUSH (Nếu Admin bật công tắc)
+        if (Boolean.TRUE.equals(request.getSendNotification())) {
+            String title = "🎬 Phim mới: " + savedMovie.getTitle();
+            String body = "Đã chính thức cập bến! Nhanh tay đặt vé ngay hôm nay để nhận chỗ ngồi đẹp nhất.";
+
+            Map<String, String> data = new HashMap<>();
+            data.put("action", "OPEN_MOVIE_DETAIL");
+            data.put("movieId", savedMovie.getId().toString());
+
+            // Gọi thẳng vào FcmService của bạn
+            fcmService.sendGlobalNotificationByTopic("ALL_USERS", title, body, data);
+        }
+
+        // 6. Trả về DTO
         return mapToDto(savedMovie);
     }
 

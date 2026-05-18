@@ -13,4 +13,5 @@ public class AdminPostCreateRequest {
     private String startDate;
     private String endDate;
     private UUID voucherId;
+    private Boolean sendNotification;
 }

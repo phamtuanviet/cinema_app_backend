@@ -32,6 +32,7 @@ public class UserVoucherService {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Transactional // 🔥 BẮT BUỘC: Đảm bảo tính toàn vẹn dữ liệu
     public VoucherDto addVoucher(UUID userId, String code) {
 
         Voucher voucher = voucherRepository.findByCode(code)
@@ -46,7 +47,12 @@ public class UserVoucherService {
             throw new RuntimeException("Voucher expired");
         }
 
-        // ❗ check đã add chưa
+        // ❗ 1. KIỂM TRA GIỚI HẠN SỐ LƯỢNG (Nếu usageLimit != null)
+        if (voucher.getUsageLimit() != null && voucher.getUsedCount() >= voucher.getUsageLimit()) {
+            throw new RuntimeException("Voucher is out of stock / Limit reached");
+        }
+
+        // ❗ 2. Kiểm tra xem user đã add voucher này chưa
         boolean exists = userVoucherRepository
                 .existsByUserIdAndVoucherId(userId, voucher.getId());
 
@@ -54,15 +60,18 @@ public class UserVoucherService {
             throw new RuntimeException("Voucher already added");
         }
 
+        // 3. Tạo và lưu UserVoucher
         User user = entityManager.getReference(User.class, userId);
-
         UserVoucher userVoucher = UserVoucher.builder()
                 .user(user)
                 .voucher(voucher)
                 .isUsed(false)
                 .build();
-
         userVoucherRepository.save(userVoucher);
+
+        // 🔥 4. TĂNG SỐ LƯỢNG ĐÃ XỬ DỤNG VÀ LƯU LẠI
+        voucher.setUsedCount(voucher.getUsedCount() + 1);
+        voucherRepository.save(voucher);
 
         return mapToVoucherDto(voucher);
     }

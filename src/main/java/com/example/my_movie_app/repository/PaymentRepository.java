@@ -5,6 +5,7 @@ import com.example.my_movie_app.entity.Payment;
 import com.example.my_movie_app.enums.PaymentStatus;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,4 +31,10 @@ public interface PaymentRepository extends JpaRepository<Payment, UUID> {
 
     // Lấy giao dịch thanh toán để lấy vnp_TransactionDate lúc refund
     Optional<Payment> findByBookingIdAndStatus(UUID bookingId, PaymentStatus status);
+
+    List<Payment> findByStatusAndPaymentTimeBetween(
+            PaymentStatus status,
+            LocalDateTime startDate,
+            LocalDateTime endDate
+    );
 }

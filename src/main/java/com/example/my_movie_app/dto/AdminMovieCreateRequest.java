@@ -18,7 +18,7 @@ public class AdminMovieCreateRequest {
     private String language;
     private String trailerUrl;
     private Boolean isActive;
-
+    private Boolean sendNotification;
     private List<UUID> genreIds;     // Các ID thể loại đã có
     private List<String> newGenres;  // Các tên thể loại mới cần tạo
 }

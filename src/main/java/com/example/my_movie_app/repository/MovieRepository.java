@@ -27,7 +27,7 @@ public interface MovieRepository extends JpaRepository<Movie, UUID> {
 
     boolean existsByTitleAndReleaseDate(String title, LocalDate releaseDate);
 
-    @EntityGraph(attributePaths = {"genres"})
+    @EntityGraph(attributePaths = {"genres", "ratings"}) // 🔥 Kéo thêm ratings lên
     Optional<Movie> findById(UUID id);
 
     List<Movie> findByIsActiveTrueAndReleaseDateBefore(LocalDate date); // now showing

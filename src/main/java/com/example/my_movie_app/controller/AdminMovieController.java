@@ -17,6 +17,7 @@ public class AdminMovieController {
 
     private final AdminMovieService adminMovieService;
 
+
     @GetMapping
     public AdminPaginatedResponse<AdminMovieDto> getMovies(
             @RequestParam(required = false) String search,

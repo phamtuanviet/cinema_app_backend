@@ -4,6 +4,7 @@ import com.example.my_movie_app.dto.MovieDto;
 import com.example.my_movie_app.dto.request.MovieRequest;
 import com.example.my_movie_app.entity.Genre;
 import com.example.my_movie_app.entity.Movie;
+import com.example.my_movie_app.entity.Rating;
 import com.example.my_movie_app.entity.Showtime;
 import com.example.my_movie_app.repository.GenreRepository;
 import com.example.my_movie_app.repository.MovieRepository;
@@ -165,12 +166,20 @@ public class MovieService {
     public MovieDto getMovieById(UUID id) {
         Movie m = movieRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Movie not found"));
-        System.out.println(
-                "Domixi " + m.getGenres()
-                        .stream()
-                        .map(Genre::getName)
-                        .toList()
-        );
+
+        // 🔥 1. Tính toán Rating Trung Bình
+        double averageRating = 0.0;
+        if (m.getRatings() != null && !m.getRatings().isEmpty()) {
+            averageRating = m.getRatings().stream()
+                    .mapToDouble(Rating::getScore)
+                    .average()
+                    .orElse(0.0);
+
+            // Làm tròn 1 chữ số thập phân (Ví dụ: 4.56 -> 4.6)
+            averageRating = Math.round(averageRating * 10.0) / 10.0;
+        }
+
+        // 🔥 2. Map sang DTO (Đã fix lỗi dư dấu phẩy ở m.getGenres())
         return new MovieDto(
                 m.getId(),
                 m.getTitle(),
@@ -183,7 +192,8 @@ public class MovieService {
                 m.getDescription(),
                 m.getGenres().stream()
                         .map(Genre::getName)
-                        .toList()
+                        .toList(),
+                averageRating // Truyền số sao trung bình vào biến cuối cùng
         );
     }
 
@@ -235,7 +245,7 @@ public class MovieService {
                         m.getDescription(),
                         m.getGenres().stream()
                                 .map(Genre::getName)
-                                .toList()
+                                .toList(),0.0
                 ))
                 .toList();
     }
@@ -261,8 +271,8 @@ public class MovieService {
                         m.getDescription(),
                         m.getGenres().stream()
                                 .map(Genre::getName)
-                                .toList()
-                ))
+                                .toList(),
+                        0.0             ))
                 .toList();
     }
 

@@ -20,7 +20,9 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -31,6 +33,7 @@ public class AdminNewsService {
     private final PostRepository postRepository;
     private final VoucherRepository voucherRepository;
     private final CloudinaryService cloudinaryService; // Inject service upload ảnh
+    private final FcmService fcmService;
 
     public AdminPaginatedResponse<AdminNewsDto> getNews(String search, String typeStr, int page, int size) {
 
@@ -202,6 +205,17 @@ public class AdminNewsService {
         }
 
         Post saved = postRepository.save(post);
+        if (Boolean.TRUE.equals(request.getSendNotification())) {
+                String title = "🔥 HOT: " + saved.getTitle();
+                String body = "Mở app ngay để xem chi tiết thông báo mới nhất từ chúng tôi!";
+
+                Map<String, String> data = new HashMap<>();
+                data.put("action", "OPEN_NEWS_DETAIL");
+                data.put("newsId", saved.getId().toString());
+
+                fcmService.sendGlobalNotificationByTopic("ALL_USERS", title, body, data);
+
+        }
         return mapToDto(saved);
     }
 }

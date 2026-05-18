@@ -21,4 +21,5 @@ public class MovieDto {
     private String releaseDate;
     private String description;
     private List<String> genres;
+    private Double rating;
 }
