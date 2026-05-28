@@ -21,4 +21,6 @@ public interface VoucherUsageRepository extends JpaRepository<VoucherUsage, UUID
     List<VoucherUsage> findByUserId(UUID userId);
 
     Optional<VoucherUsage> findByBooking_Id(UUID bookingId);
+
+    Optional<VoucherUsage> findByUserVoucher_Id(UUID userVoucherId);
 }

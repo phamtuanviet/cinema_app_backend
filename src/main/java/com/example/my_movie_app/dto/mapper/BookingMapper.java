@@ -7,6 +7,8 @@ import com.example.my_movie_app.entity.Booking;
 import com.example.my_movie_app.entity.Movie;
 import com.example.my_movie_app.entity.Showtime;
 
+import java.time.LocalDateTime;
+
 public class BookingMapper {
 
     public static BookingResponse toResponse(Booking booking) {
@@ -23,9 +25,7 @@ public class BookingMapper {
                 .totalAmount(booking.getTotalAmount())
 
                 .status(booking.getStatus().name())
-                .createdAt(booking.getCreatedAt().toString())
+                .createdAt(booking.getCreatedAt() != null ? booking.getCreatedAt().toString() : LocalDateTime.now().toString())
                 .build();
     }
-
-
 }

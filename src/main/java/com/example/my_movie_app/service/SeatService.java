@@ -14,6 +14,7 @@ import com.example.my_movie_app.enums.SeatType;
 import com.example.my_movie_app.repository.*;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -52,9 +53,10 @@ public class SeatService {
 
         boolean expired = session.getExpiresAt().isBefore(Instant.now());
 
-        // 🔥 CHECK BOOKING FIRST
-        Booking booking = bookingRepository.findBySession(session).orElse(null);
+        Sort sort = Sort.by(Sort.Order.desc("createdAt").nullsLast());
 
+        // 🔥 CHECK BOOKING FIRST
+        Booking booking = bookingRepository.findFirstBySession(session, sort).orElse(null);
         if (booking != null && booking.getStatus() == BookingStatus.PAID) {
             return SeatStatus.BOOKED;
         }

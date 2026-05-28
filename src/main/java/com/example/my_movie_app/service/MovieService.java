@@ -1,6 +1,7 @@
 package com.example.my_movie_app.service;
 
 import com.example.my_movie_app.dto.MovieDto;
+import com.example.my_movie_app.dto.PageResponse;
 import com.example.my_movie_app.dto.request.MovieRequest;
 import com.example.my_movie_app.entity.Genre;
 import com.example.my_movie_app.entity.Movie;
@@ -10,8 +11,11 @@ import com.example.my_movie_app.repository.GenreRepository;
 import com.example.my_movie_app.repository.MovieRepository;
 import com.example.my_movie_app.repository.ShowtimeRepository;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.fasterxml.jackson.core.type.TypeReference;
@@ -179,6 +183,10 @@ public class MovieService {
             averageRating = Math.round(averageRating * 10.0) / 10.0;
         }
 
+        if(averageRating == 0) {
+            averageRating = 5.0;
+        }
+
         // 🔥 2. Map sang DTO (Đã fix lỗi dư dấu phẩy ở m.getGenres())
         return new MovieDto(
                 m.getId(),
@@ -194,6 +202,102 @@ public class MovieService {
                         .map(Genre::getName)
                         .toList(),
                 averageRating // Truyền số sao trung bình vào biến cuối cùng
+        );
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<MovieDto> getMoviesComingSoon(String search, int page, int size) {
+        System.out.println(search);
+        ZoneId zone = ZoneId.of("Asia/Ho_Chi_Minh");
+        LocalDate today = LocalDate.now(zone);
+        Pageable pageable = PageRequest.of(page, size);
+
+        // 🔥 Biến null thành chuỗi rỗng
+        String safeSearch = (search == null) ? "" : search;
+
+        Page<Movie> moviePage = showtimeRepository.findComingSoon(today, safeSearch, pageable);
+        return mapToPageResponse(moviePage);
+    }
+
+    @Transactional(readOnly = true)
+    public PageResponse<MovieDto> getMoviesNowShowing(String search, int page, int size) {
+        System.out.println(search);
+        ZoneId zone = ZoneId.of("Asia/Ho_Chi_Minh");
+        LocalDateTime now = LocalDateTime.now(zone);
+        LocalDate today = now.toLocalDate();
+        Pageable pageable = PageRequest.of(page, size);
+
+        // 🔥 Biến null thành chuỗi rỗng
+        String safeSearch = (search == null) ? "" : search;
+
+        Page<Movie> moviePage = showtimeRepository.findNowShowing(now, today, safeSearch, pageable);
+        return mapToPageResponse(moviePage);
+    }
+
+    private PageResponse<MovieDto> mapToPageResponse(Page<Movie> moviePage) {
+        // Nếu trang trống thì trả về luôn, khỏi tốn công gọi DB
+        if (moviePage.isEmpty()) {
+            return new PageResponse<>(List.of(), moviePage.isLast(), moviePage.getTotalPages(), moviePage.getTotalElements());
+        }
+
+        // 1. Trích xuất danh sách ID của các phim nằm trong trang hiện tại (VD: lấy 10 ID)
+        List<UUID> movieIds = moviePage.getContent().stream()
+                .map(Movie::getId)
+                .toList();
+
+        // 2. CHỦ ĐỘNG lấy các phim đó kèm theo Thể loại (Genres) từ DB
+        // Lúc này Hibernate sẽ query và nạp sẵn genres, không còn bị Lazy nữa
+        List<Movie> moviesWithGenres = movieRepository.findAllMoviesWithDetailsByIdIn(movieIds);
+
+        // Bỏ vào Map để tra cứu lại nhanh chóng theo ID
+        Map<UUID, Movie> movieMap = moviesWithGenres.stream()
+                .collect(Collectors.toMap(Movie::getId, m -> m));
+
+        // 3. Bắt đầu Map sang DTO
+        List<MovieDto> dtos = moviePage.getContent().stream()
+                .map(m -> {
+                    // Lấy ra bộ phim ĐÃ ĐƯỢC NẠP SẴN GENRES từ Map
+                    Movie fullMovie = movieMap.get(m.getId());
+                    double averageRating = 0.0;
+                    if (fullMovie.getRatings() != null && !fullMovie.getRatings().isEmpty()) {
+                        averageRating = fullMovie.getRatings().stream()
+                                .mapToDouble(Rating::getScore)
+                                .average()
+                                .orElse(0.0);
+                        // Làm tròn 1 chữ số thập phân
+                        averageRating = Math.round(averageRating * 10.0) / 10.0;
+                    }
+
+                    // Điểm mặc định nếu chưa ai đánh giá
+                    if (averageRating == 0) {
+                        averageRating = 5.0;
+                    }
+                    return new MovieDto(
+                            fullMovie.getId(),
+                            fullMovie.getTitle(),
+                            fullMovie.getDurationMinutes(),
+                            fullMovie.getPosterUrl(),
+                            fullMovie.getAgeRating(),
+                            fullMovie.getLanguage(),
+                            fullMovie.getTrailerUrl(),
+                            fullMovie.getReleaseDate() != null ? fullMovie.getReleaseDate().toString() : null,
+                            fullMovie.getDescription(),
+
+                            // Lúc này gọi getGenres() cực kỳ an toàn, vì nó đã có sẵn data!
+                            fullMovie.getGenres().stream()
+                                    .map(Genre::getName)
+                                    .toList(),
+
+                            averageRating
+                    );
+                })
+                .toList();
+
+        return new PageResponse<>(
+                dtos,
+                moviePage.isLast(),
+                moviePage.getTotalPages(),
+                moviePage.getTotalElements()
         );
     }
 
@@ -218,62 +322,6 @@ public class MovieService {
         }
 
         return "ENDED";
-    }
-
-
-    public List<MovieDto> getMoviesNowShowing() {
-
-        ZoneId zone = ZoneId.of("Asia/Ho_Chi_Minh");
-
-        LocalDateTime now = LocalDateTime.now(zone);
-        LocalDate today = LocalDate.now(zone);
-
-        List<Movie> movies = showtimeRepository.findNowShowing(now, today);
-
-        if (movies.isEmpty()) return List.of();
-
-        return movies.stream()
-                .map(m -> new MovieDto(
-                        m.getId(),
-                        m.getTitle(),
-                        m.getDurationMinutes(),
-                        m.getPosterUrl(),
-                        m.getAgeRating(),
-                        m.getLanguage(),
-                        m.getTrailerUrl(),
-                        m.getReleaseDate().toString(),
-                        m.getDescription(),
-                        m.getGenres().stream()
-                                .map(Genre::getName)
-                                .toList(),0.0
-                ))
-                .toList();
-    }
-    public List<MovieDto> getMoviesComingSoon() {
-        ZoneId zone = ZoneId.of("Asia/Ho_Chi_Minh");
-
-        LocalDate today = LocalDate.now(zone);
-
-        List<Movie> movies = showtimeRepository.findComingSoon(today);
-
-        if (movies.isEmpty()) return List.of();
-
-        return movies.stream()
-                .map(m -> new MovieDto(
-                        m.getId(),
-                        m.getTitle(),
-                        m.getDurationMinutes(),
-                        m.getPosterUrl(),
-                        m.getAgeRating(),
-                        m.getLanguage(),
-                        m.getTrailerUrl(),
-                        m.getReleaseDate().toString(),
-                        m.getDescription(),
-                        m.getGenres().stream()
-                                .map(Genre::getName)
-                                .toList(),
-                        0.0             ))
-                .toList();
     }
 
 }

@@ -25,4 +25,6 @@ public interface BannerRepository extends JpaRepository<Banner, UUID> {
     );
 
     List<Banner> findByIsActiveTrueOrderByPriorityDesc();
+
+    List<Banner> findTop4ByIsActiveTrueOrderByPriorityDescCreatedAtDesc();
 }

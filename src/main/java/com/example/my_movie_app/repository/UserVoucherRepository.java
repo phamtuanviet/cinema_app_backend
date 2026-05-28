@@ -1,9 +1,6 @@
 package com.example.my_movie_app.repository;
 
-import com.example.my_movie_app.entity.User;
-import com.example.my_movie_app.entity.UserToken;
-import com.example.my_movie_app.entity.UserVoucher;
-import com.example.my_movie_app.entity.Voucher;
+import com.example.my_movie_app.entity.*;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;

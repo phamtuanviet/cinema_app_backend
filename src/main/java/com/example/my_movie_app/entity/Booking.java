@@ -3,6 +3,7 @@ package com.example.my_movie_app.entity;
 import com.example.my_movie_app.enums.BookingStatus;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -53,4 +54,8 @@ public class Booking extends BaseEntity{
 
     @OneToMany(mappedBy = "booking")
     private List<BookingCombo> bookingCombos;
+
+    @CreationTimestamp
+    @Column(name = "created_at", updatable = false)
+    private LocalDateTime createdAt;
 }

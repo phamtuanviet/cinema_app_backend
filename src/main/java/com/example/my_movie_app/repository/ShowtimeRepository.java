@@ -6,6 +6,7 @@ import com.example.my_movie_app.entity.Showtime;
 import io.lettuce.core.dynamic.annotation.Param;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
@@ -34,28 +35,42 @@ public interface ShowtimeRepository extends JpaRepository<Showtime, UUID> {
             LocalDateTime start,
             LocalDateTime end
     );
+//    @Query("SELECT DISTINCT m FROM Movie m LEFT JOIN FETCH m.genres WHERE m.id IN :ids")
+//    List<Movie> findAllMoviesWithGenresByIdIn(@Param("ids") List<UUID> ids);
+//
+//    @EntityGraph(attributePaths = {"genres", "ratings"})
+//    @Query("SELECT m FROM Movie m WHERE m.id IN :ids")
+//    List<Movie> findAllMoviesWithDetailsByIdIn(@Param("ids") List<UUID> ids);
 
     @Query("""
     SELECT DISTINCT m
     FROM Showtime s
     JOIN s.movie m
-    LEFT JOIN FETCH m.genres
-    WHERE s.startTime > :now
-    AND m.releaseDate <= :today
+    WHERE m.isActive = true 
+    AND m.releaseDate > :today
+    AND LOWER(m.title) LIKE LOWER(CONCAT('%', :search, '%'))
 """)
-    List<Movie> findNowShowing(
-            @Param("now") LocalDateTime now,
-            @Param("today") LocalDate today
+    Page<Movie> findComingSoon(
+            @Param("today") LocalDate today,
+            @Param("search") String search,
+            Pageable pageable
     );
 
     @Query("""
     SELECT DISTINCT m
     FROM Showtime s
     JOIN s.movie m
-    LEFT JOIN FETCH m.genres
-    WHERE m.releaseDate > :today
+    WHERE m.isActive = true 
+    AND s.startTime > :now
+    AND m.releaseDate <= :today
+    AND LOWER(m.title) LIKE LOWER(CONCAT('%', :search, '%'))
 """)
-    List<Movie> findComingSoon(@Param("today") LocalDate today);
+    Page<Movie> findNowShowing(
+            @Param("now") LocalDateTime now,
+            @Param("today") LocalDate today,
+            @Param("search") String search,
+            Pageable pageable
+    );
 
     @Query(value = """
     SELECT DISTINCT DATE(s.start_time)

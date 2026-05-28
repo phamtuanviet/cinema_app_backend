@@ -30,6 +30,9 @@ public interface MovieRepository extends JpaRepository<Movie, UUID> {
     @EntityGraph(attributePaths = {"genres", "ratings"}) // 🔥 Kéo thêm ratings lên
     Optional<Movie> findById(UUID id);
 
+    @Query("SELECT m FROM Movie m WHERE m.id IN :ids")
+    List<Movie> findAllMoviesWithDetailsByIdIn(@Param("ids") List<UUID> ids);
+
     List<Movie> findByIsActiveTrueAndReleaseDateBefore(LocalDate date); // now showing
     List<Movie> findByIsActiveTrueAndReleaseDateAfter(LocalDate date);
 

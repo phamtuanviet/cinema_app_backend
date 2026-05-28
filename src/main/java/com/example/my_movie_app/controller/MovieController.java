@@ -1,6 +1,7 @@
 package com.example.my_movie_app.controller;
 
 import com.example.my_movie_app.dto.MovieDto;
+import com.example.my_movie_app.dto.PageResponse;
 import com.example.my_movie_app.entity.Movie;
 import com.example.my_movie_app.service.MovieService;
 import lombok.RequiredArgsConstructor;
@@ -23,13 +24,21 @@ public class MovieController {
     }
 
     @GetMapping("/coming-soon")
-    public List<MovieDto> getMoviesComingSoon() {
-        return movieService.getMoviesComingSoon();
+    public PageResponse<MovieDto> getMoviesComingSoon(
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return movieService.getMoviesComingSoon(search, page, size);
     }
 
     @GetMapping("/now-showing")
-    public List<MovieDto> getMoviesNowShowing() {
-        return movieService.getMoviesNowShowing();
+    public PageResponse<MovieDto> getMoviesNowShowing(
+            @RequestParam(value = "search", required = false) String search,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return movieService.getMoviesNowShowing(search, page, size);
     }
 
     @PutMapping("/{id}")

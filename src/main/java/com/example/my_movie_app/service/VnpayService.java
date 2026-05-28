@@ -66,8 +66,7 @@ public class VnpayService {
     @Transactional
     public String createPaymentUrl(UUID bookingId, HttpServletRequest request) {
 
-        Booking booking = bookingRepository.findByIdWithSession(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+        Booking booking = bookingRepository.findByIdWithSession(bookingId).orElseThrow(() -> new RuntimeException("Booking not found"));
 
         SeatHoldSession session = booking.getSession();
 
@@ -86,10 +85,7 @@ public class VnpayService {
         String expire = formatter.format(expireDate);
 
         // ===== AMOUNT (NO DECIMAL) =====
-        String amount = booking.getTotalAmount()
-                .multiply(BigDecimal.valueOf(100))
-                .setScale(0, RoundingMode.HALF_UP)
-                .toPlainString();
+        String amount = booking.getTotalAmount().multiply(BigDecimal.valueOf(100)).setScale(0, RoundingMode.HALF_UP).toPlainString();
 
         // ===== PARAMS =====
         Map<String, String> params = new HashMap<>();
@@ -130,13 +126,9 @@ public class VnpayService {
                     query.append("&");
                 }
 
-                hashData.append(name)
-                        .append("=")
-                        .append(URLEncoder.encode(value, StandardCharsets.US_ASCII));
+                hashData.append(name).append("=").append(URLEncoder.encode(value, StandardCharsets.US_ASCII));
 
-                query.append(URLEncoder.encode(name, StandardCharsets.US_ASCII))
-                        .append("=")
-                        .append(URLEncoder.encode(value, StandardCharsets.US_ASCII));
+                query.append(URLEncoder.encode(name, StandardCharsets.US_ASCII)).append("=").append(URLEncoder.encode(value, StandardCharsets.US_ASCII));
 
                 first = false;
             }
@@ -159,13 +151,11 @@ public class VnpayService {
     public VnpayRefundResponse refundTransaction(UUID bookingId, String ipAddr, String createBy) {
 
         // 1. Lấy thông tin Booking và Giao dịch thanh toán
-        Booking booking = bookingRepository.findById(bookingId)
-                .orElseThrow(() -> new RuntimeException("Booking not found"));
+        Booking booking = bookingRepository.findById(bookingId).orElseThrow(() -> new RuntimeException("Booking not found"));
 
         // Giả sử bạn có PaymentEntity lưu thông tin giao dịch lúc thanh toán thành công
         // Cần thiết để lấy vnp_TransactionDate của lúc Pay
-        Payment payment = paymentRepository.findByBookingIdAndStatus(bookingId, PaymentStatus.SUCCESS)
-                .orElseThrow(() -> new RuntimeException("Successful payment not found for booking"));
+        Payment payment = paymentRepository.findByBookingIdAndStatus(bookingId, PaymentStatus.SUCCESS).orElseThrow(() -> new RuntimeException("Successful payment not found for booking"));
 
         // 2. Chuẩn bị dữ liệu định dạng ngày tháng
 
@@ -176,10 +166,7 @@ public class VnpayService {
         String vnp_TransactionType = "02";
         String vnp_TxnRef = booking.getTicketCode();
 
-        String vnp_Amount = booking.getTotalAmount()
-                .multiply(BigDecimal.valueOf(100))
-                .setScale(0, RoundingMode.HALF_UP)
-                .toPlainString();
+        String vnp_Amount = booking.getTotalAmount().multiply(BigDecimal.valueOf(100)).setScale(0, RoundingMode.HALF_UP).toPlainString();
 
         String vnp_OrderInfo = "Hoan tien GD OrderId:" + vnp_TxnRef;
 
@@ -197,37 +184,18 @@ public class VnpayService {
         String vnp_CreateDate = formatter.format(new Date());
 
         // 3. TẠO HASH Y HỆT MẪU VNPAY (An toàn tuyệt đối)
-        String hash_Data = String.join("|",
-                vnp_RequestId, vnp_Version, vnp_Command, tmnCode,
-                vnp_TransactionType, vnp_TxnRef, vnp_Amount, vnp_TransactionNo,
-                vnp_TransactionDate, createBy, vnp_CreateDate, ipAddr, vnp_OrderInfo
-        );
+        String hash_Data = String.join("|", vnp_RequestId, vnp_Version, vnp_Command, tmnCode, vnp_TransactionType, vnp_TxnRef, vnp_Amount, vnp_TransactionNo, vnp_TransactionDate, createBy, vnp_CreateDate, ipAddr, vnp_OrderInfo);
 
         String vnp_SecureHash = hmacSHA512(hashSecret, hash_Data);
 
         // 4. Tạo Request Body (Đã có @JsonProperty trong class này rồi nhé)
-        VnpayRefundRequest requestData = VnpayRefundRequest.builder()
-                .vnp_RequestId(vnp_RequestId)
-                .vnp_Version(vnp_Version)
-                .vnp_Command(vnp_Command)
-                .vnp_TmnCode(tmnCode)
-                .vnp_TransactionType(vnp_TransactionType)
-                .vnp_TxnRef(vnp_TxnRef)
-                .vnp_Amount(vnp_Amount)
-                .vnp_TransactionNo(vnp_TransactionNo)
-                .vnp_TransactionDate(vnp_TransactionDate) // <-- Nạp đúng String cũ vào đây
-                .vnp_CreateBy(createBy)
-                .vnp_CreateDate(vnp_CreateDate)
-                .vnp_IpAddr(ipAddr)
-                .vnp_OrderInfo(vnp_OrderInfo)
-                .vnp_SecureHash(vnp_SecureHash)
-                .build();
+        VnpayRefundRequest requestData = VnpayRefundRequest.builder().vnp_RequestId(vnp_RequestId).vnp_Version(vnp_Version).vnp_Command(vnp_Command).vnp_TmnCode(tmnCode).vnp_TransactionType(vnp_TransactionType).vnp_TxnRef(vnp_TxnRef).vnp_Amount(vnp_Amount).vnp_TransactionNo(vnp_TransactionNo).vnp_TransactionDate(vnp_TransactionDate) // <-- Nạp đúng String cũ vào đây
+                .vnp_CreateBy(createBy).vnp_CreateDate(vnp_CreateDate).vnp_IpAddr(ipAddr).vnp_OrderInfo(vnp_OrderInfo).vnp_SecureHash(vnp_SecureHash).build();
 
         // 6. Gửi Request lên VNPAY
         HttpHeaders headers = new HttpHeaders();
         headers.setContentType(MediaType.APPLICATION_JSON);
         HttpEntity<VnpayRefundRequest> entity = new HttpEntity<>(requestData, headers);
-
 
 
         try {
@@ -262,14 +230,13 @@ public class VnpayService {
                         });
                     }
 
-                    // ==========================================
-                    // 3. HOÀN TRẢ ĐIỂM THƯỞNG (NẾU CÓ DÙNG)
-                    // ==========================================
-                    if (booking.getPointDiscount() != null && booking.getPointDiscount().compareTo(BigDecimal.ZERO) > 0) {
+                    int earnedPoints = booking.getTotalAmount().divide(BigDecimal.valueOf(50), RoundingMode.DOWN).intValue();
 
-                        // Tính số điểm đã dùng (vì 1 điểm = 1 VNĐ theo logic createBooking của bạn)
-                        int pointsToRefund = booking.getPointDiscount().intValue();
+                    int pointDiscount = (booking.getPointDiscount() != null) ? booking.getPointDiscount().intValue() : 0;
 
+                    int pointsToRefund = pointDiscount - earnedPoints;
+
+                    if (pointsToRefund != 0) {
                         loyaltyAccountRepository.findByUser_Id(booking.getUser().getId()).ifPresent(account -> {
 
                             // 3.1 Cộng lại điểm vào tài khoản
@@ -277,17 +244,12 @@ public class VnpayService {
                             loyaltyAccountRepository.save(account);
 
                             // 3.2 Ghi lại lịch sử giao dịch trả điểm
-                            LoyaltyTransaction refundTransaction = LoyaltyTransaction.builder()
-                                    .account(account)
-                                    .points(pointsToRefund) // Giá trị dương
+                            LoyaltyTransaction refundTransaction = LoyaltyTransaction.builder().account(account).points(pointsToRefund) // Giá trị dương
                                     .type(LoyaltyTransactionType.REFUND) // Bạn nên thêm type REFUND vào Enum
-                                    .description("Refund points for canceled booking " + booking.getTicketCode())
-                                    .booking(booking)
-                                    .build();
+                                    .description("Refund points for canceled booking " + booking.getTicketCode()).booking(booking).build();
 
                             loyaltyTransactionRepository.save(refundTransaction);
                         });
-
                     }
 
                     payment.setStatus(PaymentStatus.REFUNDED);
@@ -328,9 +290,7 @@ public class VnpayService {
                     hashData.append("&");
                 }
 
-                hashData.append(name)
-                        .append("=")
-                        .append(URLEncoder.encode(value, StandardCharsets.US_ASCII));
+                hashData.append(name).append("=").append(URLEncoder.encode(value, StandardCharsets.US_ASCII));
 
                 first = false;
             }
@@ -345,10 +305,7 @@ public class VnpayService {
         try {
             Mac mac = Mac.getInstance("HmacSHA512");
 
-            SecretKeySpec secretKey = new SecretKeySpec(
-                    key.getBytes(StandardCharsets.UTF_8),
-                    "HmacSHA512"
-            );
+            SecretKeySpec secretKey = new SecretKeySpec(key.getBytes(StandardCharsets.UTF_8), "HmacSHA512");
 
             mac.init(secretKey);
 

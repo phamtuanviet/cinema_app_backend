@@ -37,7 +37,7 @@ public class AuthService {
     public RegisterResponse register(RegisterRequest request) {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
-            throw new RuntimeException("Email already exists");
+            throw new RuntimeException("Email đã tồn tại");
         }
 
         User user = new User();
@@ -52,7 +52,7 @@ public class AuthService {
         otpService.generateAndSendOtp(user.getEmail(),OtpType.REGISTER);
 
         return RegisterResponse.builder()
-                .message("Check your email to verify account")
+                .message("Kiểm tra email của bạn để xác thực")
                 .build();    }
 
     // ================= VERIFY EMAIL =================
@@ -62,18 +62,18 @@ public class AuthService {
         boolean valid = otpService.verifyOtp(request.getEmail(), request.getOtp(), OtpType.REGISTER);
 
         if (!valid) {
-            throw new RuntimeException("Invalid OTP");
+            throw new RuntimeException("OTP không hợp lệ");
         }
 
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("Không tin thấy user"));
 
         user.setIsVerified(true);
 
         userRepository.save(user);
 
         return  VerifyEmailResponse.builder()
-                .message("Email verified successfully")
+                .message("Xác thực email thành công")
                 .build();
     }
 
@@ -145,14 +145,14 @@ public class AuthService {
 
         UserToken token = tokenRepository
                 .findByRefreshToken(request.getRefreshToken())
-                .orElseThrow(() -> new RuntimeException("Invalid refresh token"));
+                .orElseThrow(() -> new RuntimeException("Refresh token không hợp lệ"));
 
         if (token.getIsRevoked()) {
-            throw new RuntimeException("Token revoked");
+            throw new RuntimeException("Thu hồi token");
         }
 
         if (token.getExpiresAt().isBefore(LocalDateTime.now())) {
-            throw new RuntimeException("Token expired");
+            throw new RuntimeException("Token hết hạn");
         }
 
         User user = token.getUser();
@@ -181,17 +181,26 @@ public class AuthService {
 
     // ================= LOGOUT =================
 
-    public LogoutResponse logout(LogoutRequest request) {
+    @Transactional
+    public void logout(LogoutRequest request) {
 
-        UserToken token = tokenRepository
-                .findByRefreshToken(request.getRefreshToken())
-                .orElseThrow(() -> new RuntimeException("Token not found"));
+        // 1. Thu hồi Refresh Token
+        if (request.getRefreshToken() != null) {
+            tokenRepository.findByRefreshToken(request.getRefreshToken())
+                    .ifPresent(token -> {
+                        token.setIsRevoked(true); // Đánh dấu là đã thu hồi
+                        tokenRepository.save(token);
+                    });
+        }
 
-        token.setIsRevoked(true);
-
-        tokenRepository.save(token);
-
-        return LogoutResponse.builder().message("Logged out successfully").build();
+        // 2. Vô hiệu hóa FCM Token (Ngừng gửi Push Notification tới thiết bị này cho user này)
+        if (request.getFcmToken() != null) {
+            userDeviceRepository.findByFcmToken(request.getFcmToken())
+                    .ifPresent(device -> {
+                        device.setActive(false); // Vô hiệu hóa thiết bị
+                        userDeviceRepository.save(device);
+                    });
+        }
     }
 
     // ================= FORGOT PASSWORD =================
@@ -199,11 +208,11 @@ public class AuthService {
     public ForgotPasswordResponse forgotPassword(ForgotPasswordRequest request) {
 
         User user = userRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User không tìm thấy"));
 
         otpService.generateAndSendOtp(user.getEmail(), OtpType.FORGOT_PASSWORD);
 
-        return ForgotPasswordResponse.builder().message("OTP sent to email").build();
+        return ForgotPasswordResponse.builder().message("OTP đã được gửi đến email").build();
     }
 
     // ================= VERIFY FORGOT =================
@@ -215,7 +224,7 @@ public class AuthService {
         boolean valid = otpService.verifyOtp(request.getEmail(), request.getOtp(), OtpType.FORGOT_PASSWORD);
 
         if (!valid) {
-            throw new RuntimeException("Invalid OTP");
+            throw new RuntimeException("OTP không hợp lê");
         }
 
         String resetToken = jwtService.generateResetToken(request.getEmail());
@@ -230,14 +239,14 @@ public class AuthService {
         String email = jwtService.extractEmailFromResetToken(request.getResetToken());
 
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("User not found"));
+                .orElseThrow(() -> new RuntimeException("User không tìm thấy"));
 
         user.setPasswordHash(passwordEncoder.encode(request.getPassword()));
 
         userRepository.save(user);
 
         return ResetPasswordResponse.builder()
-                .message("Password reset successfully")
+                .message("Reset password thành công")
                 .build();
     }
 

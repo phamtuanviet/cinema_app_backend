@@ -25,21 +25,15 @@ public class BannerService {
     private final BannerRepository bannerRepository;
 
     public List<BannerDto> getActiveBanners() {
-        return bannerRepository.findByIsActiveTrueOrderByPriorityDesc()
+        return bannerRepository.findTop4ByIsActiveTrueOrderByPriorityDescCreatedAtDesc()
                 .stream()
-                .sorted(
-                        Comparator.comparing(Banner::getCreatedAt).reversed()
-                                .thenComparing(Banner::getPriority, Comparator.reverseOrder())
-                )
-                .limit(4)
                 .map(b -> new BannerDto(
-                        // Chuyển UUID sang String hoặc giữ nguyên tùy cấu trúc BannerDto của bạn
                         b.getId(),
                         b.getImageUrl(),
-                        b.getActionType() != null ? b.getActionType().name() : null, // Ép Enum sang chuỗi
-                        b.getTargetUrl(), // Đã thay thế actionValue
+                        b.getActionType() != null ? b.getActionType().name() : null,
+                        b.getTargetUrl(),
                         b.getMovieId(),
-                        b.getPriority()// Thêm trường movieId
+                        b.getPriority()
                 ))
                 .collect(Collectors.toList());
     }

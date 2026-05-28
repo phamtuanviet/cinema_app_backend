@@ -16,5 +16,9 @@ public interface LoyaltyTransactionRepository extends JpaRepository<LoyaltyTrans
 
     List<LoyaltyTransaction> findByAccountUserId(UUID userId);
 
-    List<LoyaltyTransaction> findByAccountUserIdOrderByCreatedAtDesc(UUID userId);}
+    List<LoyaltyTransaction> findByAccountUserIdOrderByCreatedAtDesc(UUID userId);
+
+
+
+}
 

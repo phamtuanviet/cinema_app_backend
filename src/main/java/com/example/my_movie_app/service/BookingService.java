@@ -204,7 +204,8 @@ public class BookingService {
                 .status(BookingStatus.PENDING)
                 .session(session)
                 .build();
-        bookingRepo.save(booking);
+
+        booking = bookingRepo.saveAndFlush(booking);
 
         if (req.getSelectedCombos() != null) {
 
@@ -243,17 +244,22 @@ public class BookingService {
             userVoucher.setUsedAt(LocalDateTime.now());
             userVoucherRepo.save(userVoucher);
 
-            VoucherUsage usage = new VoucherUsage();
-            usage.setId(UUID.randomUUID());
+            VoucherUsage usage = voucherUsageRepo.findByUserVoucher_Id(userVoucher.getId())
+                    .orElse(new VoucherUsage());
+
+            if (usage.getId() == null) {
+                usage.setId(UUID.randomUUID());
+            }
             usage.setVoucher(userVoucher.getVoucher());
             usage.setUser(session.getUser());
             usage.setBooking(booking);
             usage.setUserVoucher(userVoucher);
             usage.setDiscountAmount(voucherDiscount);
-            usage.setStatus(UsageStatus.USED);
+            usage.setStatus(UsageStatus.USED); // Cập nhật lại trạng thái thành USED
             usage.setUsedAt(LocalDateTime.now());
 
             voucherUsageRepo.save(usage);
+
         }
 
 
@@ -453,7 +459,7 @@ public class BookingService {
 
         UUID movieId = b.getShowtime().getMovie().getId();
 
-        // 3. Lấy thông tin Rating (Do chỉ có 1 phim nên query trực tiếp cho nhanh)
+        // 3. Lấy thông tin Rating (D0o chỉ có 1 phim nên query trực tiếp cho nhanh)
         Integer userRating = ratingRepository.findByUserIdAndMovieId(userId, movieId)
                 .map(Rating::getScore).orElse(null);
         Double avgRating = ratingRepository.getAverageRatingByMovieId(movieId);

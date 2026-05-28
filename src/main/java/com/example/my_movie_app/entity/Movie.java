@@ -2,6 +2,7 @@ package com.example.my_movie_app.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.BatchSize;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
@@ -39,9 +40,12 @@ public class Movie extends BaseEntity {
             name = "movie_genres",
             joinColumns = @JoinColumn(name = "movie_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id")
+
     )
+    @BatchSize(size = 20)
     private List<Genre> genres;
 
     @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL, orphanRemoval = true)
+    @BatchSize(size = 20)
     private List<Rating> ratings;
 }

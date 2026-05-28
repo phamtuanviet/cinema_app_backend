@@ -13,6 +13,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
@@ -66,11 +68,10 @@ public class AuthController {
     }
 
     @PostMapping("/logout")
-    public ResponseEntity<LogoutResponse> logout(
-            @RequestBody LogoutRequest request
-    ) {
-        LogoutResponse response = authService.logout(request);
-        return ResponseEntity.ok(response);
+    public ResponseEntity<?> logout(@RequestBody LogoutRequest request) {
+        authService.logout(request);
+
+        return ResponseEntity.ok(Map.of("message", "Logged out successfully"));
     }
 
     @PostMapping("/forgot")
