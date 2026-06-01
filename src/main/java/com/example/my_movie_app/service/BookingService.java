@@ -203,6 +203,7 @@ public class BookingService {
                 .qrCodeUrl(qrUrl)
                 .status(BookingStatus.PENDING)
                 .session(session)
+                .createdAt(LocalDateTime.now())
                 .build();
 
         booking = bookingRepo.saveAndFlush(booking);

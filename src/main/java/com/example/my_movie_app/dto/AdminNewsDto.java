@@ -21,4 +21,5 @@ public class AdminNewsDto {
     private String startDate;
     private String endDate;
     private String voucherCode;
+    private String voucherId;
 }

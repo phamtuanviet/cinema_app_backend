@@ -87,7 +87,11 @@ public class AdminNewsService {
 
         // Rút trích an toàn mã Voucher nếu có
         String vCode = null;
+        String vId = null;
         if (post.getVoucher() != null) {
+            if (post.getVoucher().getId() != null) {
+                vId = post.getVoucher().getId().toString();
+            }
             vCode = post.getVoucher().getCode();
         }
 
@@ -101,6 +105,7 @@ public class AdminNewsService {
                 .endDate(endDateStr)
                 .voucherCode(vCode)
                 .content(post.getContent())
+                .voucherId(vId)
                 .build();
     }
 
