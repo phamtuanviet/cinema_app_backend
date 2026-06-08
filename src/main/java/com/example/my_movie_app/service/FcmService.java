@@ -1,8 +1,6 @@
 package com.example.my_movie_app.service;
 
-import com.google.firebase.messaging.FirebaseMessaging;
-import com.google.firebase.messaging.Message;
-import com.google.firebase.messaging.Notification;
+import com.google.firebase.messaging.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
@@ -23,6 +21,14 @@ public class FcmService {
                             .setBody(body)
                             .build())
                     .putAllData(data)
+                    .setAndroidConfig(AndroidConfig.builder()
+                            .setPriority(AndroidConfig.Priority.HIGH) // Ép thông báo ưu tiên cao (nảy popup)
+                            .setNotification(AndroidNotification.builder()
+                                    .setChannelId("movie_ticket_channel") // BẮT BUỘC TRÙNG VỚI ID BÊN ANDROID
+                                    .setDefaultSound(true)
+                                    .setDefaultVibrateTimings(true)
+                                    .build())
+                            .build())
                     .build();
 
             String response = FirebaseMessaging.getInstance().send(message);
@@ -50,7 +56,7 @@ public class FcmService {
             Message message = messageBuilder.build();
             String response = FirebaseMessaging.getInstance().send(message);
 
-            log.info("🚀 Gửi FCM Broadcast tới topic '{}' thành công: {}", topic, response);
+            log.info(" Gửi FCM Broadcast tới topic '{}' thành công: {}", topic, response);
         } catch (Exception e) {
             log.error("❌ Lỗi khi gửi FCM Broadcast tới topic '{}': {}", topic, e.getMessage(), e);
         }
